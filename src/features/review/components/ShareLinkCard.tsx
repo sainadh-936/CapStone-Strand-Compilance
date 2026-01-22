@@ -61,7 +61,13 @@ export function ShareLinkCard({ submissionUrl }: ShareLinkCardProps) {
         </Box>
       </Box>
 
-      <Box sx={{ display: "flex", gap: 1.5 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: 1.5,
+        }}
+      >
         <Button onClick={shareWhatsApp} variant="outline" sx={{ flex: 1 }}>
           💬 Share via WhatsApp
         </Button>

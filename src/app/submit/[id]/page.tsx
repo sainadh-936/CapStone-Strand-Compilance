@@ -216,7 +216,14 @@ export default function PublicSubmissionPage() {
 
   return (
     <Box
-      sx={{ minHeight: "100vh", bgcolor: "background.default", py: 3, px: 2 }}
+      sx={{
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        py: { xs: 2, sm: 3 },
+        px: { xs: 1.5, sm: 2 },
+        pt: "calc(env(safe-area-inset-top) + 16px)",
+        pb: "calc(env(safe-area-inset-bottom) + 16px)",
+      }}
     >
       <Box sx={{ maxWidth: "sm", mx: "auto" }}>
         {/* Header */}

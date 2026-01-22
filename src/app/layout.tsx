@@ -15,6 +15,14 @@ export const metadata: Metadata = {
   robots: "noindex, nofollow", // Prevent search engine indexing
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover" as const,
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -32,9 +40,17 @@ export default function RootLayout({
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                pb: { xs: "env(safe-area-inset-bottom)", sm: 0 },
               }}
             >
-              <Container maxWidth="lg">{children}</Container>
+              <Container
+                maxWidth="lg"
+                sx={{
+                  px: { xs: 2, sm: 3 },
+                }}
+              >
+                {children}
+              </Container>
             </Box>
           </ThemeProvider>
         </AppRouterCacheProvider>

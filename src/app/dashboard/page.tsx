@@ -47,27 +47,51 @@ export default function DashboardPage() {
   };
 
   return (
-    <Box sx={{ maxWidth: "md", mx: "auto", px: 3, py: 6 }}>
+    <Box
+      sx={{
+        maxWidth: "md",
+        mx: "auto",
+        px: { xs: 2, sm: 3 },
+        py: { xs: 3, sm: 6 },
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
           alignItems: { sm: "center" },
           justifyContent: "space-between",
-          gap: 3,
-          mb: 5,
+          gap: { xs: 2, sm: 3 },
+          mb: { xs: 3, sm: 5 },
         }}
       >
         <Box sx={{ textAlign: { xs: "center", sm: "left" } }}>
-          <Typography variant="h1" sx={{ color: "common.white" }}>
+          <Typography
+            variant="h1"
+            sx={{
+              color: "common.white",
+              fontSize: { xs: "1.5rem", sm: "1.875rem" },
+            }}
+          >
             Active Collection Sessions
           </Typography>
-          <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>
+          <Typography
+            sx={{
+              color: "grey.400",
+              mt: { xs: 1, sm: 2 },
+              fontSize: { xs: "1rem", sm: "1.125rem" },
+            }}
+          >
             Monitor and manage sample collection sessions
           </Typography>
         </Box>
-        <Link href="/session/new">
-          <Button size="lg">+ New Session</Button>
+        <Link
+          href="/session/new"
+          style={{ width: "100%", display: "contents" }}
+        >
+          <Button size="lg" sx={{ width: { xs: "100%", sm: "auto" } }}>
+            + New Session
+          </Button>
         </Link>
       </Box>
 
@@ -135,13 +159,30 @@ function SessionCard({
       <Box
         sx={{
           display: "flex",
-          alignItems: "flex-start",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "stretch", sm: "flex-start" },
           justifyContent: "space-between",
+          gap: { xs: 2, sm: 0 },
         }}
       >
-        <Box sx={{ flex: 1 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1 }}>
-            <Typography variant="h4" sx={{ color: "common.white" }}>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              mb: 1,
+              flexWrap: "wrap",
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                color: "common.white",
+                fontSize: { xs: "0.9375rem", sm: "1rem" },
+                wordBreak: "break-word",
+              }}
+            >
               {session.patientName}
             </Typography>
             <Badge status={session.status} />
@@ -196,9 +237,18 @@ function SessionCard({
           </Typography>
         </Box>
 
-        <Box sx={{ display: "flex", gap: 1, ml: 2 }}>
-          <Link href={action.href}>
-            <Button size="sm">{action.label}</Button>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            ml: { xs: 0, sm: 2 },
+            width: { xs: "100%", sm: "auto" },
+          }}
+        >
+          <Link href={action.href} style={{ flex: 1 }}>
+            <Button size="sm" sx={{ width: { xs: "100%", sm: "auto" } }}>
+              {action.label}
+            </Button>
           </Link>
           <Button size="sm" variant="ghost" onClick={onDelete}>
             🗑️

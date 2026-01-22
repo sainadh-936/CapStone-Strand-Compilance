@@ -18,7 +18,14 @@ export function Header() {
   return (
     <AppBar position="sticky" elevation={0}>
       <Toolbar
-        sx={{ maxWidth: "lg", width: "100%", mx: "auto", px: 2, minHeight: 56 }}
+        sx={{
+          maxWidth: "lg",
+          width: "100%",
+          mx: "auto",
+          px: { xs: 1.5, sm: 2 },
+          minHeight: { xs: 52, sm: 56 },
+          pt: "env(safe-area-inset-top)",
+        }}
       >
         <Link
           href="/dashboard"
@@ -31,8 +38,8 @@ export function Header() {
         >
           <Box
             sx={{
-              width: 36,
-              height: 36,
+              width: { xs: 32, sm: 36 },
+              height: { xs: 32, sm: 36 },
               borderRadius: 1,
               bgcolor: "primary.main",
               display: "flex",
@@ -40,7 +47,7 @@ export function Header() {
               justifyContent: "center",
               color: "common.white",
               fontWeight: 600,
-              fontSize: "0.875rem",
+              fontSize: { xs: "0.75rem", sm: "0.875rem" },
             }}
           >
             S
@@ -50,7 +57,7 @@ export function Header() {
             sx={{
               fontWeight: 600,
               color: "grey.100",
-              fontSize: "1.5rem",
+              fontSize: { xs: "1.125rem", sm: "1.5rem" },
             }}
           >
             Strand Logistics

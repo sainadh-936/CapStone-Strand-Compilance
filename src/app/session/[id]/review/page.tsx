@@ -67,14 +67,34 @@ export default function ReviewPage() {
   const isLinkGenerated = session.status !== "created";
 
   return (
-    <Box sx={{ maxWidth: "sm", mx: "auto", px: 3, py: 6 }}>
-      <Box sx={{ textAlign: "center", mb: 6 }}>
+    <Box
+      sx={{
+        maxWidth: "sm",
+        mx: "auto",
+        px: { xs: 2, sm: 3 },
+        py: { xs: 3, sm: 6 },
+      }}
+    >
+      <Box sx={{ textAlign: "center", mb: { xs: 4, sm: 6 } }}>
         <Box
-          sx={{ display: "inline-flex", alignItems: "center", gap: 1, mb: 2 }}
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 1,
+            mb: 2,
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
         >
           <Chip label="Step 4 of 4" size="small" sx={{ bgcolor: "grey.800" }} />
-          <Typography sx={{ color: "grey.400" }}>•</Typography>
-          <Typography sx={{ color: "grey.400" }}>
+          <Typography
+            sx={{ color: "grey.400", display: { xs: "none", sm: "block" } }}
+          >
+            •
+          </Typography>
+          <Typography
+            sx={{ color: "grey.400", fontSize: { xs: "0.875rem", sm: "1rem" } }}
+          >
             {session.patientName}
           </Typography>
         </Box>
@@ -83,7 +103,13 @@ export default function ReviewPage() {
             ? "Collection Link Ready"
             : "Generate Collection Link"}
         </Typography>
-        <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>
+        <Typography
+          sx={{
+            color: "grey.400",
+            mt: { xs: 1, sm: 2 },
+            fontSize: { xs: "0.9375rem", sm: "1.125rem" },
+          }}
+        >
           {isLinkGenerated
             ? "Share this link with the patient or phlebotomist"
             : "Review the session details and generate a shareable link"}
@@ -102,7 +128,14 @@ export default function ReviewPage() {
         )
       )}
 
-      <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: 2,
+          mt: 4,
+        }}
+      >
         {!isLinkGenerated && (
           <Button
             variant="outline"

@@ -18,7 +18,7 @@ export function Card({ children, hover = false, onClick, sx }: CardProps) {
     <MUICard
       onClick={onClick}
       sx={{
-        p: 3,
+        p: { xs: 2.5, sm: 3 },
         cursor: onClick ? "pointer" : "default",
         transition: "all 0.2s ease",
         ...(hover && {

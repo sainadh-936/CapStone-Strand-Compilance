@@ -74,12 +74,31 @@ export default function NewSessionPage() {
   };
 
   return (
-    <Box sx={{ maxWidth: "sm", mx: "auto", px: 3, py: 6 }}>
-      <Box sx={{ textAlign: "center", mb: 6 }}>
-        <Typography variant="h1" sx={{ color: "common.white" }}>
+    <Box
+      sx={{
+        maxWidth: "sm",
+        mx: "auto",
+        px: { xs: 2, sm: 3 },
+        py: { xs: 3, sm: 6 },
+      }}
+    >
+      <Box sx={{ textAlign: "center", mb: { xs: 4, sm: 6 } }}>
+        <Typography
+          variant="h1"
+          sx={{
+            color: "common.white",
+            fontSize: { xs: "1.375rem", sm: "1.875rem" },
+          }}
+        >
           Create Collection Session
         </Typography>
-        <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>
+        <Typography
+          sx={{
+            color: "grey.400",
+            mt: { xs: 1, sm: 2 },
+            fontSize: { xs: "0.9375rem", sm: "1.125rem" },
+          }}
+        >
           Enter patient details to start a new sample collection session
         </Typography>
       </Box>
@@ -117,7 +136,11 @@ export default function NewSessionPage() {
             />
 
             <Box
-              sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 3 }}
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                gap: { xs: 2, sm: 3 },
+              }}
             >
               <Input
                 label="Age"
