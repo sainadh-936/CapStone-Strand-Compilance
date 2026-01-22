@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Strand Logistics — Sample Collection Compliance System
 
-## Getting Started
+A mobile-first Next.js application for Strand Life Sciences to streamline diagnostic sample collection documentation and improve freelancer compliance.
 
-First, run the development server:
+## 🎯 Problem Statement
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Third-party phlebotomists often skip documentation (TRFs, prescriptions, reports), causing samples to arrive at the lab incomplete. This system provides a frictionless way to collect required documents via shareable links.
+
+## 🔄 High-Level Flow
+
+```
+Ops creates pickup session
+        ↓
+Ops selects required documents
+        ↓
+Ops builds digital forms (optional)
+        ↓
+System generates shareable link
+        ↓
+Pablo/Patient submits via mobile
+        ↓
+Ops monitors completion on dashboard
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📱 Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Pickup Session Management** — Create and track sample collection sessions
+- **Dynamic Form Builder** — Ops can design custom forms per document type
+- **Shareable Links** — Unique URLs for each session (no login required)
+- **Mobile-First Upload** — Camera capture + gallery upload for documents
+- **Real-time Dashboard** — Track submission status across all sessions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Tech Stack
 
-## Learn More
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Rendering:** Server Components by default
+- **Storage:** Frontend state / Local Storage (Phase 1)
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/                  # Routes and layouts
+│   ├── dashboard/        # Ops monitoring
+│   ├── pickups/          # Session management
+│   └── submit/[id]/      # Public submission page
+├── features/             # Business domain modules
+│   ├── sessions/         # Pickup session logic
+│   ├── forms/            # Form builder & schemas
+│   └── documents/        # Document upload handling
+├── components/           # Reusable UI components
+├── lib/                  # Utilities and helpers
+└── types/                # TypeScript definitions
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Getting Started
 
-## Deploy on Vercel
+```bash
+# Install dependencies
+npm install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Run development server
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📖 Documentation
+
+- [instructions.md](./instructions.md) — Detailed workflow and feature specifications
+- [codingStandards.md](./codingStandards.md) — Mandatory coding rules and architecture guidelines
+
+## 🔮 Future Scope
+
+- Backend API integration
+- Offline upload queue
+- Role-based access control
+- Incentive auto-calculation
+- Analytics dashboard
