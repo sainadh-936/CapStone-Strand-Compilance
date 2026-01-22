@@ -20,8 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <main className="min-h-screen">
-          {children}
+        <main className="flex justify-center items-center">
+          <div className="w-full max-w-7xl">
+            {children}
+          </div>
         </main>
       </body>
     </html>
