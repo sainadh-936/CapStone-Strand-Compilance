@@ -23,14 +23,17 @@ export default function DocumentSelectionPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const s = getSession(sessionId);
-    if (!s) {
-      router.push("/dashboard");
-      return;
+    async function setDocumentSelectionPage() {
+      const s = getSession(sessionId);
+      if (!s) {
+        router.push("/dashboard");
+        return;
+      }
+      setSession(s);
+      setSelectedDocs(s.requiredDocuments);
+      setIsLoading(false);
     }
-    setSession(s);
-    setSelectedDocs(s.requiredDocuments);
-    setIsLoading(false);
+    setDocumentSelectionPage();
   }, [sessionId, router]);
 
   const toggleDocument = (docType: DocumentType) => {

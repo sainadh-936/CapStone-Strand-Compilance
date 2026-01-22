@@ -36,24 +36,27 @@ export default function PublicSubmissionPage() {
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    const s = getSession(sessionId);
-    if (!s) {
+    async function setPublicSubmissionPage() {
+      const s = getSession(sessionId);
+      if (!s) {
+        setIsLoading(false);
+        return;
+      }
+      setSession(s);
+
+      // Check if already submitted
+      if (s.status === "submitted") {
+        setIsComplete(true);
+      } else if (s.status === "link_generated") {
+        // Update status to in_progress
+        const updated = { ...s, status: "in_progress" as const };
+        saveSession(updated);
+        setSession(updated);
+      }
+
       setIsLoading(false);
-      return;
     }
-    setSession(s);
-
-    // Check if already submitted
-    if (s.status === "submitted") {
-      setIsComplete(true);
-    } else if (s.status === "link_generated") {
-      // Update status to in_progress
-      const updated = { ...s, status: "in_progress" as const };
-      saveSession(updated);
-      setSession(updated);
-    }
-
-    setIsLoading(false);
+    setPublicSubmissionPage();
   }, [sessionId]);
 
   if (isLoading) {

@@ -24,13 +24,16 @@ export default function ReviewPage() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const s = getSession(sessionId);
-    if (!s) {
-      router.push("/dashboard");
-      return;
+    async function setReviewPage() {
+      const s = getSession(sessionId);
+      if (!s) {
+        router.push("/dashboard");
+        return;
+      }
+      setSession(s);
+      setIsLoading(false);
     }
-    setSession(s);
-    setIsLoading(false);
+    setReviewPage();
   }, [sessionId, router]);
 
   const generateLink = () => {

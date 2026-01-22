@@ -22,13 +22,16 @@ export default function FormBuilderPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const s = getSession(sessionId);
-    if (!s || s.requiredDocuments.length === 0) {
-      router.push("/dashboard");
-      return;
+    async function setFormBuilderPage() {
+      const s = getSession(sessionId);
+      if (!s || s.requiredDocuments.length === 0) {
+        router.push("/dashboard");
+        return;
+      }
+      setSession(s);
+      setIsLoading(false);
     }
-    setSession(s);
-    setIsLoading(false);
+    setFormBuilderPage();
   }, [sessionId, router]);
 
   if (isLoading || !session) {
