@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -11,7 +11,31 @@ import { getSessions, deleteSession } from "@/lib/storage";
 import type { Session } from "@/types";
 
 export default function DashboardPage() {
-  const [sessions, setSessions] = useState<Session[]>(() => getSessions());
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchSessions() {
+      setSessions(getSessions());
+      setIsLoading(false);
+    }
+    fetchSessions();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "60vh",
+        }}
+      >
+        <Typography>Loading sessions...</Typography>
+      </Box>
+    );
+  }
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this session?")) {
