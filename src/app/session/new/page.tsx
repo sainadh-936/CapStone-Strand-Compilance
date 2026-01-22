@@ -1,22 +1,32 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { v4 as uuidv4 } from 'uuid';
-import { Button, Input, Card } from '@/components/ui';
-import { createSessionSchema, type CreateSessionInput } from '@/features/sessions/schemas';
-import { saveSession } from '@/lib/storage';
-import type { Session } from '@/types';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { Button, Input, Card } from "@/components/ui";
+import {
+  createSessionSchema,
+  type CreateSessionInput,
+} from "@/features/sessions/schemas";
+import { saveSession } from "@/lib/storage";
+import type { Session } from "@/types";
 
 export default function NewSessionPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState<Partial<CreateSessionInput>>({
-    patientName: '',
-    phoneNumber: '',
+    patientName: "",
+    phoneNumber: "",
     gender: undefined,
-    city: '',
+    city: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,7 +42,7 @@ export default function NewSessionPage() {
 
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
-      result.error.issues.forEach(err => {
+      result.error.issues.forEach((err) => {
         if (err.path[0]) {
           fieldErrors[err.path[0].toString()] = err.message;
         }
@@ -50,7 +60,7 @@ export default function NewSessionPage() {
       age: result.data.age,
       gender: result.data.gender,
       city: result.data.city,
-      status: 'created',
+      status: "created",
       requiredDocuments: [],
       formSchemas: {},
       submissions: [],
@@ -58,90 +68,128 @@ export default function NewSessionPage() {
     };
 
     saveSession(session);
-    
+
     // Navigate to document selection
     router.push(`/session/${session.id}/documents`);
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-12">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+    <Box sx={{ maxWidth: "sm", mx: "auto", px: 3, py: 6 }}>
+      <Box sx={{ textAlign: "center", mb: 6 }}>
+        <Typography
+          variant="h1"
+          sx={{
+            background: "linear-gradient(to right, #ffffff, #94a3b8)",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
           Create Collection Session
-        </h1>
-        <p className="text-slate-400 mt-4 text-lg">
+        </Typography>
+        <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>
           Enter patient details to start a new sample collection session
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
       <Card>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <Input
-            label="Patient Name"
-            placeholder="Enter patient's full name"
-            required
-            value={formData.patientName || ''}
-            onChange={e => setFormData(prev => ({ ...prev, patientName: e.target.value }))}
-            error={errors.patientName}
-          />
-
-          <Input
-            label="Phone Number"
-            placeholder="+91 98765 43210"
-            type="tel"
-            required
-            value={formData.phoneNumber || ''}
-            onChange={e => setFormData(prev => ({ ...prev, phoneNumber: e.target.value }))}
-            error={errors.phoneNumber}
-          />
-
-          <div className="grid grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={3}>
             <Input
-              label="Age"
-              placeholder="Optional"
-              type="number"
-              min={0}
-              max={150}
-              value={formData.age || ''}
-              onChange={e => setFormData(prev => ({ ...prev, age: e.target.value ? Number(e.target.value) : undefined }))}
-              error={errors.age}
+              label="Patient Name"
+              placeholder="Enter patient's full name"
+              required
+              value={formData.patientName || ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  patientName: e.target.value,
+                }))
+              }
+              error={errors.patientName}
             />
 
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Gender
-              </label>
-              <select
-                value={formData.gender || ''}
-                onChange={e => setFormData(prev => ({ 
-                  ...prev, 
-                  gender: e.target.value as 'male' | 'female' | 'other' | undefined 
-                }))}
-                className="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 min-h-[48px]"
+            <Input
+              label="Phone Number"
+              placeholder="+91 98765 43210"
+              type="tel"
+              required
+              value={formData.phoneNumber || ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  phoneNumber: e.target.value,
+                }))
+              }
+              error={errors.phoneNumber}
+            />
+
+            <Box
+              sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 3 }}
+            >
+              <Input
+                label="Age"
+                placeholder="Optional"
+                type="number"
+                inputProps={{ min: 0, max: 150 }}
+                value={formData.age || ""}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    age: e.target.value ? Number(e.target.value) : undefined,
+                  }))
+                }
+                error={errors.age}
+              />
+
+              <FormControl fullWidth>
+                <InputLabel>Gender</InputLabel>
+                <Select
+                  value={formData.gender || ""}
+                  label="Gender"
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      gender: e.target.value as
+                        | "male"
+                        | "female"
+                        | "other"
+                        | undefined,
+                    }))
+                  }
+                  sx={{ minHeight: 48 }}
+                >
+                  <MenuItem value="">Select...</MenuItem>
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="other">Other</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
+            <Input
+              label="City"
+              placeholder="Optional"
+              value={formData.city || ""}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, city: e.target.value }))
+              }
+              error={errors.city}
+            />
+
+            <Box sx={{ pt: 3 }}>
+              <Button
+                type="submit"
+                sx={{ width: "100%" }}
+                size="lg"
+                isLoading={isLoading}
               >
-                <option value="">Select...</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-
-          <Input
-            label="City"
-            placeholder="Optional"
-            value={formData.city || ''}
-            onChange={e => setFormData(prev => ({ ...prev, city: e.target.value }))}
-            error={errors.city}
-          />
-
-          <div className="pt-6">
-            <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
-              Continue to Document Selection
-            </Button>
-          </div>
+                Continue to Document Selection
+              </Button>
+            </Box>
+          </Stack>
         </form>
       </Card>
-    </div>
+    </Box>
   );
 }

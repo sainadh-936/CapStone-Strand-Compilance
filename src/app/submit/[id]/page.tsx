@@ -1,11 +1,26 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'next/navigation';
-import { Button, Card } from '@/components/ui';
-import { getSession, saveSession } from '@/lib/storage';
-import { getDocumentTypeInfo } from '@/features/documents/documentTypes';
-import type { Session, DocumentType, DocumentSubmission, FormField } from '@/types';
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Button, Card } from "@/components/ui";
+import { getSession, saveSession } from "@/lib/storage";
+import { getDocumentTypeInfo } from "@/features/documents/documentTypes";
+import type {
+  Session,
+  DocumentType,
+  DocumentSubmission,
+  FormField,
+} from "@/types";
 
 export default function PublicSubmissionPage() {
   const params = useParams();
@@ -14,7 +29,9 @@ export default function PublicSubmissionPage() {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentDocIndex, setCurrentDocIndex] = useState(0);
-  const [submissions, setSubmissions] = useState<Record<DocumentType, DocumentSubmission>>({} as Record<DocumentType, DocumentSubmission>);
+  const [submissions, setSubmissions] = useState<
+    Record<DocumentType, DocumentSubmission>
+  >({} as Record<DocumentType, DocumentSubmission>);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
@@ -25,49 +42,83 @@ export default function PublicSubmissionPage() {
       return;
     }
     setSession(s);
-    
+
     // Check if already submitted
-    if (s.status === 'submitted') {
+    if (s.status === "submitted") {
       setIsComplete(true);
-    } else if (s.status === 'link_generated') {
+    } else if (s.status === "link_generated") {
       // Update status to in_progress
-      const updated = { ...s, status: 'in_progress' as const };
+      const updated = { ...s, status: "in_progress" as const };
       saveSession(updated);
       setSession(updated);
     }
-    
+
     setIsLoading(false);
   }, [sessionId]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-500" />
-      </div>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          bgcolor: "background.default",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress color="primary" />
+      </Box>
     );
   }
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
-        <Card className="text-center max-w-sm">
-          <div className="text-5xl mb-4">🔗</div>
-          <h2 className="text-xl font-semibold text-white mb-2">Link Not Found</h2>
-          <p className="text-slate-400">This submission link is invalid or has expired.</p>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          bgcolor: "background.default",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          px: 2,
+        }}
+      >
+        <Card sx={{ textAlign: "center", maxWidth: 320 }}>
+          <Typography sx={{ fontSize: "3rem", mb: 2 }}>🔗</Typography>
+          <Typography variant="h3" sx={{ color: "common.white", mb: 1 }}>
+            Link Not Found
+          </Typography>
+          <Typography sx={{ color: "grey.400" }}>
+            This submission link is invalid or has expired.
+          </Typography>
         </Card>
-      </div>
+      </Box>
     );
   }
 
   if (isComplete) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
-        <Card className="text-center max-w-sm">
-          <div className="text-5xl mb-4">✅</div>
-          <h2 className="text-xl font-semibold text-white mb-2">Submission Complete</h2>
-          <p className="text-slate-400">Thank you! Your documents have been submitted successfully.</p>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          bgcolor: "background.default",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          px: 2,
+        }}
+      >
+        <Card sx={{ textAlign: "center", maxWidth: 320 }}>
+          <Typography sx={{ fontSize: "3rem", mb: 2 }}>✅</Typography>
+          <Typography variant="h3" sx={{ color: "common.white", mb: 1 }}>
+            Submission Complete
+          </Typography>
+          <Typography sx={{ color: "grey.400" }}>
+            Thank you! Your documents have been submitted successfully.
+          </Typography>
         </Card>
-      </div>
+      </Box>
     );
   }
 
@@ -82,7 +133,7 @@ export default function PublicSubmissionPage() {
 
     const reader = new FileReader();
     reader.onload = (event) => {
-      setSubmissions(prev => ({
+      setSubmissions((prev) => ({
         ...prev,
         [currentDocType]: {
           ...prev[currentDocType],
@@ -95,7 +146,7 @@ export default function PublicSubmissionPage() {
   };
 
   const handleFormChange = (fieldId: string, value: string | number) => {
-    setSubmissions(prev => ({
+    setSubmissions((prev) => ({
       ...prev,
       [currentDocType]: {
         ...prev[currentDocType],
@@ -111,41 +162,43 @@ export default function PublicSubmissionPage() {
   const isDocumentComplete = () => {
     const sub = submissions[currentDocType];
     if (!sub) return false;
-    
+
     // Must have either image or form data
     const hasImage = !!sub.imageUrl;
-    
+
     // If has form, check required fields
     if (currentSchema?.fields?.length) {
-      const requiredFields = currentSchema.fields.filter(f => f.required);
-      const allRequiredFilled = requiredFields.every(f => 
-        sub.formData?.[f.id] !== undefined && sub.formData[f.id] !== ''
+      const requiredFields = currentSchema.fields.filter((f) => f.required);
+      const allRequiredFilled = requiredFields.every(
+        (f) => sub.formData?.[f.id] !== undefined && sub.formData[f.id] !== "",
       );
       return hasImage || allRequiredFilled;
     }
-    
+
     return hasImage;
   };
 
   const handleNext = () => {
     if (currentDocIndex < totalDocs - 1) {
-      setCurrentDocIndex(prev => prev + 1);
+      setCurrentDocIndex((prev) => prev + 1);
     }
   };
 
   const handleSubmitAll = async () => {
     setIsSubmitting(true);
-    
+
     // Save all submissions
-    const allSubmissions: DocumentSubmission[] = session.requiredDocuments.map(docType => ({
-      ...submissions[docType],
-      documentType: docType,
-      submittedAt: new Date().toISOString(),
-    }));
+    const allSubmissions: DocumentSubmission[] = session.requiredDocuments.map(
+      (docType) => ({
+        ...submissions[docType],
+        documentType: docType,
+        submittedAt: new Date().toISOString(),
+      }),
+    );
 
     const updatedSession: Session = {
       ...session,
-      status: 'submitted',
+      status: "submitted",
       submissions: allSubmissions,
     };
 
@@ -159,201 +212,271 @@ export default function PublicSubmissionPage() {
   const canProceed = isDocumentComplete();
 
   return (
-    <div className="min-h-screen bg-slate-950 py-6 px-4">
-      <div className="max-w-lg mx-auto">
+    <Box
+      sx={{ minHeight: "100vh", bgcolor: "background.default", py: 3, px: 2 }}
+    >
+      <Box sx={{ maxWidth: "sm", mx: "auto" }}>
         {/* Header */}
-        <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xl mx-auto mb-3">
+        <Box sx={{ textAlign: "center", mb: 3 }}>
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              background: "linear-gradient(to bottom right, #8b5cf6, #4f46e5)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "common.white",
+              fontWeight: 700,
+              fontSize: "1.25rem",
+              mx: "auto",
+              mb: 1.5,
+            }}
+          >
             S
-          </div>
-          <h1 className="text-xl font-semibold text-white">{session.patientName}</h1>
-          <p className="text-slate-400 text-sm">Document Submission</p>
-        </div>
+          </Box>
+          <Typography variant="h3" sx={{ color: "common.white" }}>
+            {session.patientName}
+          </Typography>
+          <Typography sx={{ color: "grey.400", fontSize: "0.875rem" }}>
+            Document Submission
+          </Typography>
+        </Box>
 
         {/* Progress */}
-        <div className="flex gap-1 mb-6">
+        <Box sx={{ display: "flex", gap: 0.5, mb: 3 }}>
           {session.requiredDocuments.map((_, idx) => (
-            <div
+            <Box
               key={idx}
-              className={`flex-1 h-1.5 rounded-full transition-colors ${
-                idx < currentDocIndex ? 'bg-emerald-500' :
-                idx === currentDocIndex ? 'bg-violet-500' : 'bg-slate-800'
-              }`}
+              sx={{
+                flex: 1,
+                height: 6,
+                borderRadius: 3,
+                transition: "background-color 0.2s ease",
+                bgcolor:
+                  idx < currentDocIndex
+                    ? "success.main"
+                    : idx === currentDocIndex
+                      ? "primary.main"
+                      : "grey.800",
+              }}
             />
           ))}
-        </div>
+        </Box>
 
         {/* Current Document */}
         <Card>
-          <div className="text-center mb-6">
-            <span className="text-4xl mb-2 block">{currentDocInfo?.icon}</span>
-            <h2 className="text-lg font-semibold text-white">{currentDocInfo?.name}</h2>
-            <p className="text-sm text-slate-400">Document {currentDocIndex + 1} of {totalDocs}</p>
-          </div>
+          <Box sx={{ textAlign: "center", mb: 3 }}>
+            <Typography sx={{ fontSize: "2.5rem", mb: 1 }}>
+              {currentDocInfo?.icon}
+            </Typography>
+            <Typography variant="h4" sx={{ color: "common.white" }}>
+              {currentDocInfo?.name}
+            </Typography>
+            <Typography sx={{ fontSize: "0.875rem", color: "grey.400" }}>
+              Document {currentDocIndex + 1} of {totalDocs}
+            </Typography>
+          </Box>
 
           {/* Image Upload */}
-          <div className="mb-6">
+          <Box sx={{ mb: 3 }}>
             <ImageUploader
               currentImage={submissions[currentDocType]?.imageUrl}
               onUpload={handleImageUpload}
             />
-          </div>
+          </Box>
 
           {/* Digital Form Fields */}
           {currentSchema?.fields && currentSchema.fields.length > 0 && (
-            <div className="border-t border-slate-800 pt-6">
-              <h3 className="text-sm font-medium text-slate-400 mb-4">Or fill the digital form</h3>
-              <div className="space-y-4">
-                {currentSchema.fields.map(field => (
+            <>
+              <Divider sx={{ my: 3, borderColor: "grey.800" }} />
+              <Typography
+                sx={{
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                  color: "grey.400",
+                  mb: 2,
+                }}
+              >
+                Or fill the digital form
+              </Typography>
+              <Stack spacing={2}>
+                {currentSchema.fields.map((field) => (
                   <FormFieldInput
                     key={field.id}
                     field={field}
-                    value={submissions[currentDocType]?.formData?.[field.id] || ''}
+                    value={
+                      submissions[currentDocType]?.formData?.[field.id] || ""
+                    }
                     onChange={(value) => handleFormChange(field.id, value)}
                   />
                 ))}
-              </div>
-            </div>
+              </Stack>
+            </>
           )}
 
           {/* Actions */}
-          <div className="mt-6 pt-6 border-t border-slate-800">
-            {isLastDoc ? (
-              <Button 
-                onClick={handleSubmitAll} 
-                className="w-full" 
-                size="lg"
-                disabled={!canProceed}
-                isLoading={isSubmitting}
-              >
-                Submit All Documents ✓
-              </Button>
-            ) : (
-              <Button 
-                onClick={handleNext} 
-                className="w-full" 
-                size="lg"
-                disabled={!canProceed}
-              >
-                Next Document →
-              </Button>
-            )}
-          </div>
+          <Divider sx={{ my: 3, borderColor: "grey.800" }} />
+          {isLastDoc ? (
+            <Button
+              onClick={handleSubmitAll}
+              sx={{ width: "100%" }}
+              size="lg"
+              disabled={!canProceed}
+              isLoading={isSubmitting}
+            >
+              Submit All Documents ✓
+            </Button>
+          ) : (
+            <Button
+              onClick={handleNext}
+              sx={{ width: "100%" }}
+              size="lg"
+              disabled={!canProceed}
+            >
+              Next Document →
+            </Button>
+          )}
         </Card>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
 // Image Upload Component
-function ImageUploader({ 
-  currentImage, 
-  onUpload 
-}: { 
-  currentImage?: string; 
+function ImageUploader({
+  currentImage,
+  onUpload,
+}: {
+  currentImage?: string;
   onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div>
+    <Box>
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
         capture="environment"
         onChange={onUpload}
-        className="hidden"
+        style={{ display: "none" }}
       />
-      
+
       {currentImage ? (
-        <div className="relative">
-          <img 
-            src={currentImage} 
-            alt="Uploaded document" 
-            className="w-full h-48 object-cover rounded-xl"
+        <Box sx={{ position: "relative" }}>
+          <Box
+            component="img"
+            src={currentImage}
+            alt="Uploaded document"
+            sx={{
+              width: "100%",
+              height: 192,
+              objectFit: "cover",
+              borderRadius: 3,
+            }}
           />
-          <button
+          <Button
             onClick={() => fileInputRef.current?.click()}
-            className="absolute bottom-3 right-3 px-3 py-1.5 bg-slate-900/80 backdrop-blur text-white text-sm rounded-lg hover:bg-slate-800"
+            variant="secondary"
+            size="sm"
+            sx={{
+              position: "absolute",
+              bottom: 12,
+              right: 12,
+            }}
           >
             📷 Retake
-          </button>
-        </div>
+          </Button>
+        </Box>
       ) : (
-        <button
+        <Box
           onClick={() => fileInputRef.current?.click()}
-          className="w-full h-48 border-2 border-dashed border-slate-700 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:border-violet-500 hover:text-violet-400 transition-colors"
+          sx={{
+            width: "100%",
+            height: 192,
+            border: "2px dashed",
+            borderColor: "grey.700",
+            borderRadius: 3,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "grey.400",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+            "&:hover": {
+              borderColor: "primary.main",
+              color: "primary.light",
+            },
+          }}
         >
-          <span className="text-4xl mb-2">📷</span>
-          <span className="font-medium">Take Photo or Upload</span>
-          <span className="text-sm">Tap to capture document</span>
-        </button>
+          <Typography sx={{ fontSize: "2.5rem", mb: 1 }}>📷</Typography>
+          <Typography sx={{ fontWeight: 500 }}>Take Photo or Upload</Typography>
+          <Typography sx={{ fontSize: "0.875rem" }}>
+            Tap to capture document
+          </Typography>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 
 // Form Field Input Component
-function FormFieldInput({ 
-  field, 
-  value, 
-  onChange 
-}: { 
-  field: FormField; 
-  value: string | number; 
+function FormFieldInput({
+  field,
+  value,
+  onChange,
+}: {
+  field: FormField;
+  value: string | number;
   onChange: (value: string | number) => void;
 }) {
-  const baseClasses = "w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-violet-500 min-h-[48px]";
+  if (field.type === "dropdown") {
+    return (
+      <FormControl fullWidth>
+        <InputLabel>
+          {field.label}
+          {field.required && " *"}
+        </InputLabel>
+        <Select
+          value={value as string}
+          label={field.label + (field.required ? " *" : "")}
+          onChange={(e) => onChange(e.target.value)}
+          sx={{ minHeight: 48 }}
+        >
+          <MenuItem value="">Select...</MenuItem>
+          {field.options?.map((opt) => (
+            <MenuItem key={opt} value={opt}>
+              {opt}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    );
+  }
 
   return (
-    <div>
-      <label className="block text-sm font-medium text-slate-300 mb-1.5">
-        {field.label}
-        {field.required && <span className="text-red-400 ml-1">*</span>}
-      </label>
-      
-      {field.type === 'text' && (
-        <input
-          type="text"
-          value={value as string}
-          onChange={e => onChange(e.target.value)}
-          placeholder={field.placeholder}
-          className={baseClasses}
-        />
-      )}
-      
-      {field.type === 'number' && (
-        <input
-          type="number"
-          value={value as number}
-          onChange={e => onChange(e.target.value)}
-          placeholder={field.placeholder}
-          className={baseClasses}
-        />
-      )}
-      
-      {field.type === 'date' && (
-        <input
-          type="date"
-          value={value as string}
-          onChange={e => onChange(e.target.value)}
-          className={baseClasses}
-        />
-      )}
-      
-      {field.type === 'dropdown' && (
-        <select
-          value={value as string}
-          onChange={e => onChange(e.target.value)}
-          className={baseClasses}
-        >
-          <option value="">Select...</option>
-          {field.options?.map(opt => (
-            <option key={opt} value={opt}>{opt}</option>
-          ))}
-        </select>
-      )}
-    </div>
+    <TextField
+      label={field.label}
+      required={field.required}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={field.placeholder}
+      type={
+        field.type === "number"
+          ? "number"
+          : field.type === "date"
+            ? "date"
+            : "text"
+      }
+      fullWidth
+      slotProps={{
+        inputLabel: field.type === "date" ? { shrink: true } : undefined,
+      }}
+      sx={{ "& .MuiInputBase-root": { minHeight: 48 } }}
+    />
   );
 }

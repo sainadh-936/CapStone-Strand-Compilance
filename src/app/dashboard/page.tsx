@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import LinearProgress from "@mui/material/LinearProgress";
 import { Button, Card, Badge } from "@/components/ui";
 import { getSessions, deleteSession } from "@/lib/storage";
 import type { Session } from "@/types";
@@ -17,36 +21,53 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
-        <div className="text-center sm:text-left">
-          <h1 className="text-4xl font-bold bg-linear-to-r from-white to-slate-400 bg-clip-text text-transparent">
+    <Box sx={{ maxWidth: "md", mx: "auto", px: 3, py: 6 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { sm: "center" },
+          justifyContent: "space-between",
+          gap: 3,
+          mb: 5,
+        }}
+      >
+        <Box sx={{ textAlign: { xs: "center", sm: "left" } }}>
+          <Typography
+            variant="h1"
+            sx={{
+              background: "linear-gradient(to right, #ffffff, #94a3b8)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
             Active Collection Sessions
-          </h1>
-          <p className="text-slate-400 mt-4 text-lg">
+          </Typography>
+          <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>
             Monitor and manage sample collection sessions
-          </p>
-        </div>
+          </Typography>
+        </Box>
         <Link href="/session/new">
           <Button size="lg">+ New Session</Button>
         </Link>
-      </div>
+      </Box>
 
       {sessions.length === 0 ? (
-        <Card className="text-center py-16">
-          <div className="text-6xl mb-4">📋</div>
-          <h2 className="text-xl font-semibold text-white mb-2">
+        <Card sx={{ textAlign: "center", py: 8 }}>
+          <Typography sx={{ fontSize: "3.75rem", mb: 2 }}>📋</Typography>
+          <Typography variant="h3" sx={{ color: "common.white", mb: 1 }}>
             No sessions yet
-          </h2>
-          <p className="text-slate-400 mb-6">
+          </Typography>
+          <Typography sx={{ color: "grey.400", mb: 3 }}>
             Create your first collection session to get started
-          </p>
+          </Typography>
           <Link href="/session/new">
             <Button>Create Session</Button>
           </Link>
         </Card>
       ) : (
-        <div className="space-y-5">
+        <Stack spacing={2.5}>
           {sessions.map((session) => (
             <SessionCard
               key={session.id}
@@ -54,9 +75,9 @@ export default function DashboardPage() {
               onDelete={() => handleDelete(session.id)}
             />
           ))}
-        </div>
+        </Stack>
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -93,37 +114,59 @@ function SessionCard({
 
   return (
     <Card hover>
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h3 className="text-lg font-semibold text-white">
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box sx={{ flex: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1 }}>
+            <Typography variant="h4" sx={{ color: "common.white" }}>
               {session.patientName}
-            </h3>
+            </Typography>
             <Badge status={session.status} />
-          </div>
-          <p className="text-slate-400 text-sm mb-3">
+          </Box>
+          <Typography sx={{ color: "grey.400", fontSize: "0.875rem", mb: 1.5 }}>
             📱 {session.phoneNumber}
             {session.city && ` • 📍 ${session.city}`}
-          </p>
+          </Typography>
 
           {totalDocs > 0 && (
-            <div className="mb-3">
-              <div className="flex items-center justify-between text-sm mb-1">
-                <span className="text-slate-400">Documentation</span>
-                <span className="text-slate-300">
+            <Box sx={{ mb: 1.5 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  mb: 0.5,
+                }}
+              >
+                <Typography sx={{ color: "grey.400", fontSize: "0.875rem" }}>
+                  Documentation
+                </Typography>
+                <Typography sx={{ color: "grey.300", fontSize: "0.875rem" }}>
                   {completedDocs}/{totalDocs} complete
-                </span>
-              </div>
-              <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-violet-500 to-indigo-500 transition-all duration-300"
-                  style={{ width: `${completionPercent}%` }}
-                />
-              </div>
-            </div>
+                </Typography>
+              </Box>
+              <LinearProgress
+                variant="determinate"
+                value={completionPercent}
+                sx={{
+                  height: 8,
+                  borderRadius: 4,
+                  bgcolor: "grey.800",
+                  "& .MuiLinearProgress-bar": {
+                    background: "linear-gradient(to right, #8b5cf6, #6366f1)",
+                    borderRadius: 4,
+                  },
+                }}
+              />
+            </Box>
           )}
 
-          <p className="text-xs text-slate-500">
+          <Typography sx={{ fontSize: "0.75rem", color: "grey.500" }}>
             Created{" "}
             {new Date(session.createdAt).toLocaleDateString("en-IN", {
               day: "numeric",
@@ -132,18 +175,18 @@ function SessionCard({
               hour: "2-digit",
               minute: "2-digit",
             })}
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
-        <div className="flex gap-2 ml-4">
+        <Box sx={{ display: "flex", gap: 1, ml: 2 }}>
           <Link href={action.href}>
             <Button size="sm">{action.label}</Button>
           </Link>
           <Button size="sm" variant="ghost" onClick={onDelete}>
             🗑️
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </Card>
   );
 }

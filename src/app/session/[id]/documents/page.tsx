@@ -1,11 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { Button, Card } from '@/components/ui';
-import { getSession, saveSession } from '@/lib/storage';
-import { DOCUMENT_TYPES } from '@/features/documents/documentTypes';
-import type { Session, DocumentType } from '@/types';
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Chip from "@mui/material/Chip";
+import CircularProgress from "@mui/material/CircularProgress";
+import CheckIcon from "@mui/icons-material/Check";
+import { Button, Card } from "@/components/ui";
+import { getSession, saveSession } from "@/lib/storage";
+import { DOCUMENT_TYPES } from "@/features/documents/documentTypes";
+import type { Session, DocumentType } from "@/types";
 
 export default function DocumentSelectionPage() {
   const router = useRouter();
@@ -19,7 +25,7 @@ export default function DocumentSelectionPage() {
   useEffect(() => {
     const s = getSession(sessionId);
     if (!s) {
-      router.push('/dashboard');
+      router.push("/dashboard");
       return;
     }
     setSession(s);
@@ -28,110 +34,151 @@ export default function DocumentSelectionPage() {
   }, [sessionId, router]);
 
   const toggleDocument = (docType: DocumentType) => {
-    setSelectedDocs(prev => 
-      prev.includes(docType) 
-        ? prev.filter(d => d !== docType)
-        : [...prev, docType]
+    setSelectedDocs((prev) =>
+      prev.includes(docType)
+        ? prev.filter((d) => d !== docType)
+        : [...prev, docType],
     );
   };
 
   const handleContinue = () => {
     if (!session || selectedDocs.length === 0) return;
-    
+
     const updatedSession: Session = {
       ...session,
       requiredDocuments: selectedDocs,
     };
     saveSession(updatedSession);
-    
+
     // Navigate to form builder for first document
     router.push(`/session/${sessionId}/forms`);
   };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-500" />
-      </div>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "60vh",
+        }}
+      >
+        <CircularProgress color="primary" />
+      </Box>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-12">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 text-sm text-slate-400 mb-4">
-          <span className="px-3 py-1.5 bg-slate-800 rounded-full">Step 2 of 4</span>
-          <span>•</span>
-          <span>{session?.patientName}</span>
-        </div>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+    <Box sx={{ maxWidth: "sm", mx: "auto", px: 3, py: 6 }}>
+      <Box sx={{ textAlign: "center", mb: 6 }}>
+        <Box
+          sx={{ display: "inline-flex", alignItems: "center", gap: 1, mb: 2 }}
+        >
+          <Chip label="Step 2 of 4" size="small" sx={{ bgcolor: "grey.800" }} />
+          <Typography sx={{ color: "grey.400" }}>•</Typography>
+          <Typography sx={{ color: "grey.400" }}>
+            {session?.patientName}
+          </Typography>
+        </Box>
+        <Typography
+          variant="h1"
+          sx={{
+            background: "linear-gradient(to right, #ffffff, #94a3b8)",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
           Select Required Documents
-        </h1>
-        <p className="text-slate-400 mt-4 text-lg">
+        </Typography>
+        <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>
           Choose which documents need to be collected for this session
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
-      <div className="space-y-4 mb-10">
-        {DOCUMENT_TYPES.map(doc => {
+      <Stack spacing={2} sx={{ mb: 5 }}>
+        {DOCUMENT_TYPES.map((doc) => {
           const isSelected = selectedDocs.includes(doc.id);
           return (
             <Card
               key={doc.id}
               hover
               onClick={() => toggleDocument(doc.id)}
-              className={`cursor-pointer transition-all duration-200 ${
-                isSelected 
-                  ? 'border-violet-500 bg-violet-950/30' 
-                  : ''
-              }`}
+              sx={{
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                ...(isSelected && {
+                  borderColor: "primary.main",
+                  bgcolor: "rgba(139, 92, 246, 0.1)",
+                }),
+              }}
             >
-              <div className="flex items-center gap-4">
-                <div className={`
-                  w-12 h-12 rounded-xl flex items-center justify-center text-2xl
-                  ${isSelected ? 'bg-violet-600/30' : 'bg-slate-800'}
-                `}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 2,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.5rem",
+                    bgcolor: isSelected
+                      ? "rgba(139, 92, 246, 0.3)"
+                      : "grey.800",
+                  }}
+                >
                   {doc.icon}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-white">{doc.name}</h3>
-                  <p className="text-sm text-slate-400">{doc.description}</p>
-                </div>
-                <div className={`
-                  w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors
-                  ${isSelected 
-                    ? 'border-violet-500 bg-violet-500' 
-                    : 'border-slate-600'
-                  }
-                `}>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography sx={{ fontWeight: 600, color: "common.white" }}>
+                    {doc.name}
+                  </Typography>
+                  <Typography sx={{ fontSize: "0.875rem", color: "grey.400" }}>
+                    {doc.description}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: "50%",
+                    border: 2,
+                    borderColor: isSelected ? "primary.main" : "grey.600",
+                    bgcolor: isSelected ? "primary.main" : "transparent",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    transition: "all 0.2s ease",
+                  }}
+                >
                   {isSelected && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
+                    <CheckIcon sx={{ fontSize: 16, color: "common.white" }} />
                   )}
-                </div>
-              </div>
+                </Box>
+              </Box>
             </Card>
           );
         })}
-      </div>
+      </Stack>
 
-      <div className="flex gap-4">
-        <Button 
-          variant="outline" 
-          onClick={() => router.push('/dashboard')}
-          className="flex-1"
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <Button
+          variant="outline"
+          onClick={() => router.push("/dashboard")}
+          sx={{ flex: 1 }}
         >
           Cancel
         </Button>
-        <Button 
+        <Button
           onClick={handleContinue}
           disabled={selectedDocs.length === 0}
-          className="flex-1"
+          sx={{ flex: 1 }}
         >
           Continue ({selectedDocs.length} selected)
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

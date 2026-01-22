@@ -1,14 +1,18 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { Header } from '@/components/layout/Header';
-import './globals.css';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { ThemeProvider } from "@/theme";
+import { Header } from "@/components/layout/Header";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Strand Logistics | Sample Collection System',
-  description: 'Streamline diagnostic sample collection documentation',
-  robots: 'noindex, nofollow', // Prevent search engine indexing
+  title: "Strand Logistics | Sample Collection System",
+  description: "Streamline diagnostic sample collection documentation",
+  robots: "noindex, nofollow", // Prevent search engine indexing
 };
 
 export default function RootLayout({
@@ -19,12 +23,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        <main className="flex justify-center items-center">
-          <div className="w-full max-w-7xl">
-            {children}
-          </div>
-        </main>
+        <AppRouterCacheProvider>
+          <ThemeProvider>
+            <Header />
+            <Box
+              component="main"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Container maxWidth="lg">{children}</Container>
+            </Box>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

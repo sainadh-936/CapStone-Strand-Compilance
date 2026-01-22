@@ -1,11 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { Button, Card, Badge } from '@/components/ui';
-import { getSession, saveSession } from '@/lib/storage';
-import { getDocumentTypeInfo } from '@/features/documents/documentTypes';
-import type { Session } from '@/types';
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Button, Card, Badge } from "@/components/ui";
+import { getSession, saveSession } from "@/lib/storage";
+import { getDocumentTypeInfo } from "@/features/documents/documentTypes";
+import type { Session } from "@/types";
 
 export default function ReviewPage() {
   const router = useRouter();
@@ -19,7 +26,7 @@ export default function ReviewPage() {
   useEffect(() => {
     const s = getSession(sessionId);
     if (!s) {
-      router.push('/dashboard');
+      router.push("/dashboard");
       return;
     }
     setSession(s);
@@ -28,10 +35,10 @@ export default function ReviewPage() {
 
   const generateLink = () => {
     if (!session) return;
-    
+
     const updatedSession: Session = {
       ...session,
-      status: 'link_generated',
+      status: "link_generated",
       linkGeneratedAt: new Date().toISOString(),
     };
     saveSession(updatedSession);
@@ -39,7 +46,7 @@ export default function ReviewPage() {
   };
 
   const getSubmissionUrl = () => {
-    if (typeof window === 'undefined') return '';
+    if (typeof window === "undefined") return "";
     return `${window.location.origin}/submit/${sessionId}`;
   };
 
@@ -49,130 +56,197 @@ export default function ReviewPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
 
   const shareWhatsApp = () => {
     const text = `Please submit the required documents for your sample collection:\n${getSubmissionUrl()}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   if (isLoading || !session) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-500" />
-      </div>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "60vh",
+        }}
+      >
+        <CircularProgress color="primary" />
+      </Box>
     );
   }
 
-  const isLinkGenerated = session.status !== 'created';
+  const isLinkGenerated = session.status !== "created";
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-12">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 text-sm text-slate-400 mb-4">
-          <span className="px-3 py-1.5 bg-slate-800 rounded-full">Step 4 of 4</span>
-          <span>•</span>
-          <span>{session.patientName}</span>
-        </div>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-          {isLinkGenerated ? 'Collection Link Ready' : 'Generate Collection Link'}
-        </h1>
-        <p className="text-slate-400 mt-4 text-lg">
-          {isLinkGenerated 
-            ? 'Share this link with the patient or phlebotomist' 
-            : 'Review the session details and generate a shareable link'
-          }
-        </p>
-      </div>
+    <Box sx={{ maxWidth: "sm", mx: "auto", px: 3, py: 6 }}>
+      <Box sx={{ textAlign: "center", mb: 6 }}>
+        <Box
+          sx={{ display: "inline-flex", alignItems: "center", gap: 1, mb: 2 }}
+        >
+          <Chip label="Step 4 of 4" size="small" sx={{ bgcolor: "grey.800" }} />
+          <Typography sx={{ color: "grey.400" }}>•</Typography>
+          <Typography sx={{ color: "grey.400" }}>
+            {session.patientName}
+          </Typography>
+        </Box>
+        <Typography
+          variant="h1"
+          sx={{
+            background: "linear-gradient(to right, #ffffff, #94a3b8)",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          {isLinkGenerated
+            ? "Collection Link Ready"
+            : "Generate Collection Link"}
+        </Typography>
+        <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>
+          {isLinkGenerated
+            ? "Share this link with the patient or phlebotomist"
+            : "Review the session details and generate a shareable link"}
+        </Typography>
+      </Box>
 
       {/* Session Summary */}
-      <Card className="mb-8">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-lg font-semibold text-white">{session.patientName}</h3>
-            <p className="text-slate-400">📱 {session.phoneNumber}</p>
-          </div>
+      <Card sx={{ mb: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            mb: 2,
+          }}
+        >
+          <Box>
+            <Typography variant="h4" sx={{ color: "common.white" }}>
+              {session.patientName}
+            </Typography>
+            <Typography sx={{ color: "grey.400" }}>
+              📱 {session.phoneNumber}
+            </Typography>
+          </Box>
           <Badge status={session.status} />
-        </div>
+        </Box>
 
-        <div className="border-t border-slate-800 pt-6 mt-6">
-          <h4 className="text-sm font-medium text-slate-400 mb-4">Required Documents</h4>
-          <div className="space-y-3">
-            {session.requiredDocuments.map(docType => {
+        <Divider sx={{ my: 3, borderColor: "grey.800" }} />
+
+        <Box>
+          <Typography
+            sx={{
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              color: "grey.400",
+              mb: 2,
+            }}
+          >
+            Required Documents
+          </Typography>
+          <Stack spacing={1.5}>
+            {session.requiredDocuments.map((docType) => {
               const info = getDocumentTypeInfo(docType);
               const schema = session.formSchemas[docType];
               const fieldCount = schema?.fields?.length || 0;
               return (
-                <div key={docType} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span>{info?.icon}</span>
-                    <span className="text-white text-sm">{info?.name}</span>
-                  </div>
-                  <span className="text-xs text-slate-500">
-                    {fieldCount > 0 ? `${fieldCount} fields` : 'Image only'}
-                  </span>
-                </div>
+                <Box
+                  key={docType}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Typography>{info?.icon}</Typography>
+                    <Typography
+                      sx={{ color: "common.white", fontSize: "0.875rem" }}
+                    >
+                      {info?.name}
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ fontSize: "0.75rem", color: "grey.500" }}>
+                    {fieldCount > 0 ? `${fieldCount} fields` : "Image only"}
+                  </Typography>
+                </Box>
               );
             })}
-          </div>
-        </div>
+          </Stack>
+        </Box>
       </Card>
 
       {/* Link Generation / Share */}
       {!isLinkGenerated ? (
-        <Button onClick={generateLink} className="w-full" size="lg">
+        <Button onClick={generateLink} sx={{ width: "100%" }} size="lg">
           🔗 Generate Shareable Link
         </Button>
       ) : (
-        <Card className="bg-gradient-to-br from-violet-950/50 to-indigo-950/50 border-violet-800/50">
-          <div className="mb-4">
-            <label className="text-sm text-slate-400 block mb-2">Submission Link</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                readOnly
+        <Card
+          sx={{
+            background:
+              "linear-gradient(to bottom right, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.15))",
+            borderColor: "rgba(139, 92, 246, 0.3)",
+          }}
+        >
+          <Box sx={{ mb: 2 }}>
+            <Typography sx={{ fontSize: "0.875rem", color: "grey.400", mb: 1 }}>
+              Submission Link
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <TextField
                 value={getSubmissionUrl()}
-                className="flex-1 px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white text-sm"
+                slotProps={{ input: { readOnly: true } }}
+                fullWidth
+                size="small"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    bgcolor: "rgba(15, 23, 42, 0.5)",
+                    fontSize: "0.875rem",
+                  },
+                }}
               />
               <Button onClick={copyLink} variant="secondary">
-                {copied ? '✓ Copied' : '📋 Copy'}
+                {copied ? "✓ Copied" : "📋 Copy"}
               </Button>
-            </div>
-          </div>
+            </Box>
+          </Box>
 
-          <div className="flex gap-3">
-            <Button onClick={shareWhatsApp} variant="outline" className="flex-1">
-              <span className="mr-2">💬</span> Share via WhatsApp
+          <Box sx={{ display: "flex", gap: 1.5 }}>
+            <Button onClick={shareWhatsApp} variant="outline" sx={{ flex: 1 }}>
+              💬 Share via WhatsApp
             </Button>
-            <Button 
-              onClick={() => window.open(getSubmissionUrl(), '_blank')} 
+            <Button
+              onClick={() => window.open(getSubmissionUrl(), "_blank")}
               variant="ghost"
-              className="flex-1"
+              sx={{ flex: 1 }}
             >
-              <span className="mr-2">👁️</span> Preview
+              👁️ Preview
             </Button>
-          </div>
+          </Box>
         </Card>
       )}
 
-      <div className="flex gap-4 mt-8">
-        <Button 
-          variant="outline" 
+      <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
+        <Button
+          variant="outline"
           onClick={() => router.push(`/session/${sessionId}/forms`)}
-          className="flex-1"
+          sx={{ flex: 1 }}
         >
           ← Edit Forms
         </Button>
-        <Button 
-          variant="ghost" 
-          onClick={() => router.push('/dashboard')}
-          className="flex-1"
+        <Button
+          variant="ghost"
+          onClick={() => router.push("/dashboard")}
+          sx={{ flex: 1 }}
         >
           Go to Dashboard
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

@@ -1,26 +1,37 @@
-import { ReactNode } from 'react';
+"use client";
+
+import { ReactNode } from "react";
+import MUICard from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 interface CardProps {
   children: ReactNode;
   className?: string;
   hover?: boolean;
   onClick?: () => void;
+  sx?: object;
 }
 
-export function Card({ children, className = '', hover = false, onClick }: CardProps) {
+export function Card({ children, hover = false, onClick, sx }: CardProps) {
   return (
-    <div
-      className={`
-        bg-slate-900/50 backdrop-blur-sm
-        border border-slate-800
-        rounded-2xl p-8
-        ${hover ? 'hover:border-slate-700 hover:bg-slate-900/70 transition-all duration-200 cursor-pointer' : ''}
-        ${className}
-      `}
+    <MUICard
       onClick={onClick}
+      sx={{
+        p: 3,
+        cursor: onClick ? "pointer" : "default",
+        transition: "all 0.2s ease",
+        ...(hover && {
+          "&:hover": {
+            borderColor: "grey.700",
+            bgcolor: "rgba(15, 23, 42, 0.7)",
+          },
+        }),
+        ...sx,
+      }}
     >
       {children}
-    </div>
+    </MUICard>
   );
 }
 
@@ -32,12 +43,25 @@ interface CardHeaderProps {
 
 export function CardHeader({ title, subtitle, action }: CardHeaderProps) {
   return (
-    <div className="flex items-start justify-between mb-4">
-      <div>
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
-        {subtitle && <p className="text-sm text-slate-400 mt-1">{subtitle}</p>}
-      </div>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        mb: 2,
+      }}
+    >
+      <Box>
+        <Typography variant="h4" sx={{ color: "common.white" }}>
+          {title}
+        </Typography>
+        {subtitle && (
+          <Typography variant="body2" sx={{ color: "grey.400", mt: 0.5 }}>
+            {subtitle}
+          </Typography>
+        )}
+      </Box>
       {action}
-    </div>
+    </Box>
   );
 }

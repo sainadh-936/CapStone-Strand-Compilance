@@ -1,29 +1,44 @@
-import type { SessionStatus } from '@/types';
+"use client";
+
+import Chip from "@mui/material/Chip";
+import type { SessionStatus } from "@/types";
 
 interface BadgeProps {
   status: SessionStatus;
 }
 
-const statusConfig: Record<SessionStatus, { label: string; className: string }> = {
+const statusConfig: Record<
+  SessionStatus,
+  { label: string; color: string; bgcolor: string; borderColor?: string }
+> = {
   created: {
-    label: 'Created',
-    className: 'bg-slate-700 text-slate-300',
+    label: "Created",
+    color: "#cbd5e1", // slate-300
+    bgcolor: "#334155", // slate-700
   },
   link_generated: {
-    label: 'Link Generated',
-    className: 'bg-blue-900/50 text-blue-400 border border-blue-800',
+    label: "Link Generated",
+    color: "#60a5fa", // blue-400
+    bgcolor: "rgba(30, 58, 138, 0.5)", // blue-900/50
+    borderColor: "#1e3a8a",
   },
   in_progress: {
-    label: 'In Progress',
-    className: 'bg-amber-900/50 text-amber-400 border border-amber-800',
+    label: "In Progress",
+    color: "#fbbf24", // amber-400
+    bgcolor: "rgba(120, 53, 15, 0.5)", // amber-900/50
+    borderColor: "#78350f",
   },
   submitted: {
-    label: 'Submitted',
-    className: 'bg-emerald-900/50 text-emerald-400 border border-emerald-800',
+    label: "Submitted",
+    color: "#34d399", // emerald-400
+    bgcolor: "rgba(6, 78, 59, 0.5)", // emerald-900/50
+    borderColor: "#064e3b",
   },
   incomplete: {
-    label: 'Incomplete',
-    className: 'bg-red-900/50 text-red-400 border border-red-800',
+    label: "Incomplete",
+    color: "#f87171", // red-400
+    bgcolor: "rgba(127, 29, 29, 0.5)", // red-900/50
+    borderColor: "#7f1d1d",
   },
 };
 
@@ -31,14 +46,16 @@ export function Badge({ status }: BadgeProps) {
   const config = statusConfig[status];
 
   return (
-    <span
-      className={`
-        inline-flex items-center px-2.5 py-1 rounded-full
-        text-xs font-medium
-        ${config.className}
-      `}
-    >
-      {config.label}
-    </span>
+    <Chip
+      label={config.label}
+      size="small"
+      sx={{
+        color: config.color,
+        bgcolor: config.bgcolor,
+        border: config.borderColor ? `1px solid ${config.borderColor}` : "none",
+        fontSize: "0.75rem",
+        fontWeight: 500,
+      }}
+    />
   );
 }

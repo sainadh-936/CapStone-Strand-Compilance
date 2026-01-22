@@ -1,54 +1,49 @@
-'use client';
+"use client";
 
-import { InputHTMLAttributes, forwardRef } from 'react';
+import { forwardRef } from "react";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
+import FormHelperText from "@mui/material/FormHelperText";
+import Box from "@mui/material/Box";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<TextFieldProps, "error"> {
   label?: string;
   error?: string;
   helperText?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className = '', label, error, helperText, id, ...props }, ref) => {
-    const inputId = id || label?.toLowerCase().replace(/\s/g, '-');
-
+  ({ label, error, helperText, required, ...props }, ref) => {
     return (
-      <div className="w-full">
-        {label && (
-          <label 
-            htmlFor={inputId}
-            className="block text-sm font-medium text-slate-300 mb-1.5"
-          >
-            {label}
-            {props.required && <span className="text-red-400 ml-1">*</span>}
-          </label>
-        )}
-        <input
-          ref={ref}
-          id={inputId}
-          className={`
-            w-full px-4 py-3 rounded-xl
-            bg-slate-800/50 border border-slate-700
-            text-white placeholder-slate-500
-            focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent
-            transition-all duration-200
-            min-h-[48px]
-            ${error ? 'border-red-500 focus:ring-red-500' : ''}
-            ${className}
-          `}
+      <Box sx={{ width: "100%" }}>
+        <TextField
+          inputRef={ref}
+          label={label}
+          required={required}
+          error={!!error}
+          fullWidth
+          variant="outlined"
+          sx={{
+            "& .MuiInputBase-root": {
+              minHeight: 48,
+            },
+          }}
           {...props}
         />
         {error && (
-          <p className="mt-1.5 text-sm text-red-400">{error}</p>
+          <FormHelperText error sx={{ mt: 0.5 }}>
+            {error}
+          </FormHelperText>
         )}
         {helperText && !error && (
-          <p className="mt-1.5 text-sm text-slate-500">{helperText}</p>
+          <FormHelperText sx={{ mt: 0.5, color: "grey.500" }}>
+            {helperText}
+          </FormHelperText>
         )}
-      </div>
+      </Box>
     );
-  }
+  },
 );
 
-Input.displayName = 'Input';
+Input.displayName = "Input";
 
 export { Input };

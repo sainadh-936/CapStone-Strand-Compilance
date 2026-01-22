@@ -1,50 +1,125 @@
-'use client';
+"use client";
 
-import { ButtonHTMLAttributes, forwardRef } from 'react';
+import { forwardRef, ReactNode } from "react";
+import MUIButton from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import { SxProps, Theme } from "@mui/material/styles";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+interface ButtonProps {
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
+  size?: "sm" | "md" | "lg";
   isLoading?: boolean;
+  disabled?: boolean;
+  children?: ReactNode;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
+  sx?: SxProps<Theme>;
+  className?: string;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className = '', variant = 'primary', size = 'md', isLoading, disabled, children, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-    
-    const variants = {
-      primary: 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-700 hover:to-indigo-700 focus:ring-violet-500 shadow-lg shadow-violet-500/25',
-      secondary: 'bg-slate-800 text-white hover:bg-slate-700 focus:ring-slate-500',
-      outline: 'border-2 border-slate-700 text-slate-300 hover:bg-slate-800 focus:ring-slate-500',
-      ghost: 'text-slate-400 hover:text-white hover:bg-slate-800 focus:ring-slate-500',
-      danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+  (
+    {
+      variant = "primary",
+      size = "md",
+      isLoading,
+      disabled,
+      children,
+      onClick,
+      type = "button",
+      sx,
+      ...props
+    },
+    ref,
+  ) => {
+    const sizeMap = {
+      sm: "small" as const,
+      md: "medium" as const,
+      lg: "large" as const,
     };
-    
-    const sizes = {
-      sm: 'px-3 py-1.5 text-sm min-h-[36px]',
-      md: 'px-4 py-2.5 text-base min-h-[44px]',
-      lg: 'px-6 py-3 text-lg min-h-[52px]',
+
+    const getVariantStyles = (): SxProps<Theme> => {
+      switch (variant) {
+        case "secondary":
+          return {
+            bgcolor: "grey.800",
+            color: "common.white",
+            "&:hover": { bgcolor: "grey.700" },
+          };
+        case "outline":
+          return {
+            borderColor: "grey.700",
+            borderWidth: 2,
+            color: "grey.300",
+            "&:hover": {
+              borderColor: "grey.600",
+              bgcolor: "rgba(30, 41, 59, 0.5)",
+              borderWidth: 2,
+            },
+          };
+        case "ghost":
+          return {
+            color: "grey.400",
+            "&:hover": {
+              color: "common.white",
+              bgcolor: "rgba(30, 41, 59, 0.5)",
+            },
+          };
+        default:
+          return {};
+      }
+    };
+
+    const getMuiVariant = () => {
+      switch (variant) {
+        case "primary":
+        case "secondary":
+        case "danger":
+          return "contained";
+        case "outline":
+          return "outlined";
+        case "ghost":
+          return "text";
+        default:
+          return "contained";
+      }
+    };
+
+    const getMuiColor = () => {
+      switch (variant) {
+        case "primary":
+          return "primary";
+        case "danger":
+          return "error";
+        case "outline":
+        case "ghost":
+          return "inherit";
+        default:
+          return "primary";
+      }
     };
 
     return (
-      <button
+      <MUIButton
         ref={ref}
-        className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+        variant={getMuiVariant()}
+        color={getMuiColor()}
+        size={sizeMap[size]}
         disabled={disabled || isLoading}
+        onClick={onClick}
+        type={type}
+        sx={[getVariantStyles(), ...(Array.isArray(sx) ? sx : [sx])]}
         {...props}
       >
         {isLoading && (
-          <svg className="animate-spin -ml-1 mr-2 h-4 w-4\" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-          </svg>
+          <CircularProgress size={16} color="inherit" sx={{ mr: 1 }} />
         )}
         {children}
-      </button>
+      </MUIButton>
     );
-  }
+  },
 );
 
-Button.displayName = 'Button';
+Button.displayName = "Button";
 
 export { Button };
