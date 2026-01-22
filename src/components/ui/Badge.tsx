@@ -13,14 +13,15 @@ const statusConfig: Record<
 > = {
   created: {
     label: "Created",
-    color: "#cbd5e1", // slate-300
-    bgcolor: "#334155", // slate-700
+    color: "#c7d2fe", // indigo-200
+    bgcolor: "rgba(55, 48, 163, 0.4)", // indigo-800/40
+    borderColor: "#4338ca", // indigo-700
   },
   link_generated: {
     label: "Link Generated",
-    color: "#60a5fa", // blue-400
-    bgcolor: "rgba(30, 58, 138, 0.5)", // blue-900/50
-    borderColor: "#1e3a8a",
+    color: "#a5b4fc", // indigo-300
+    bgcolor: "rgba(79, 70, 229, 0.3)", // indigo-600/30
+    borderColor: "#6366f1", // indigo-500
   },
   in_progress: {
     label: "In Progress",

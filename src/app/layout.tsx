@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { ThemeProvider } from "@/theme";
 import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import "./globals.css";
@@ -33,24 +34,33 @@ export default function RootLayout({
       <body className={inter.className}>
         <AppRouterCacheProvider>
           <ThemeProvider>
-            <Header />
             <Box
-              component="main"
               sx={{
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                pb: { xs: "env(safe-area-inset-bottom)", sm: 0 },
+                flexDirection: "column",
+                minHeight: "100vh",
               }}
             >
-              <Container
-                maxWidth="lg"
+              <Header />
+              <Box
+                component="main"
                 sx={{
-                  px: { xs: 2, sm: 3 },
+                  flex: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  pb: { xs: "env(safe-area-inset-bottom)", sm: 0 },
                 }}
               >
-                {children}
-              </Container>
+                <Container
+                  maxWidth="lg"
+                  sx={{
+                    px: { xs: 2, sm: 3 },
+                  }}
+                >
+                  {children}
+                </Container>
+              </Box>
+              <Footer />
             </Box>
           </ThemeProvider>
         </AppRouterCacheProvider>

@@ -6,9 +6,9 @@ const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#3b82f6", // blue-500
-      light: "#60a5fa", // blue-400
-      dark: "#2563eb", // blue-600
+      main: "#6366f1", // indigo-500
+      light: "#818cf8", // indigo-400
+      dark: "#4f46e5", // indigo-600
     },
     secondary: {
       main: "#64748b", // slate-500
@@ -25,7 +25,7 @@ const theme = createTheme({
       main: "#22c55e",
     },
     info: {
-      main: "#3b82f6",
+      main: "#6366f1",
     },
     background: {
       default: "#0f172a", // slate-900
@@ -106,9 +106,9 @@ const theme = createTheme({
           fontSize: "0.8125rem",
         },
         containedPrimary: {
-          backgroundColor: "#3b82f6",
+          background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
           "&:hover": {
-            backgroundColor: "#2563eb",
+            background: "linear-gradient(135deg, #818cf8 0%, #6366f1 100%)",
           },
         },
       },
@@ -139,7 +139,7 @@ const theme = createTheme({
               borderColor: "#475569",
             },
             "&.Mui-focused fieldset": {
-              borderColor: "#3b82f6",
+              borderColor: "#6366f1",
             },
           },
         },
@@ -157,7 +157,7 @@ const theme = createTheme({
             borderColor: "#475569",
           },
           "&.Mui-focused fieldset": {
-            borderColor: "#3b82f6",
+            borderColor: "#6366f1",
           },
         },
       },
@@ -190,9 +190,9 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#1e293b",
-          borderBottom: "1px solid #334155",
-          boxShadow: "none",
+          backgroundColor: "#312e81", // indigo-900
+          borderBottom: "none",
+          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
         },
       },
     },

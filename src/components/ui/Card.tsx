@@ -20,11 +20,13 @@ export function Card({ children, hover = false, onClick, sx }: CardProps) {
       sx={{
         p: { xs: 2.5, sm: 3 },
         cursor: onClick ? "pointer" : "default",
-        transition: "all 0.2s ease",
+        transition: "all 0.3s ease",
+        borderRadius: 3,
         ...(hover && {
           "&:hover": {
-            borderColor: "grey.700",
-            bgcolor: "rgba(15, 23, 42, 0.7)",
+            borderColor: "primary.dark",
+            transform: "translateY(-2px)",
+            boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.15)",
           },
         }),
         ...sx,

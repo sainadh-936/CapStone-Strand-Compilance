@@ -33,34 +33,35 @@ export function Header() {
             textDecoration: "none",
             display: "flex",
             alignItems: "center",
-            gap: 8,
+            gap: 10,
           }}
         >
           <Box
             sx={{
               width: { xs: 32, sm: 36 },
               height: { xs: 32, sm: 36 },
-              borderRadius: 1,
-              bgcolor: "primary.main",
+              borderRadius: 1.5,
+              background: "linear-gradient(135deg, #818cf8 0%, #6366f1 100%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "common.white",
-              fontWeight: 600,
-              fontSize: { xs: "0.75rem", sm: "0.875rem" },
+              fontWeight: 700,
+              fontSize: { xs: "1rem", sm: "1.125rem" },
             }}
           >
-            S
+            🔬
           </Box>
           <Typography
             variant="h6"
             sx={{
               fontWeight: 600,
-              color: "grey.100",
-              fontSize: { xs: "1.125rem", sm: "1.5rem" },
+              color: "common.white",
+              fontSize: { xs: "1rem", sm: "1.25rem" },
+              letterSpacing: "-0.01em",
             }}
           >
-            Strand Logistics
+            Strand Logistics 2.0
           </Typography>
         </Link>
       </Toolbar>
