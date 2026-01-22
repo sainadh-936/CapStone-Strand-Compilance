@@ -76,15 +76,7 @@ export default function NewSessionPage() {
   return (
     <Box sx={{ maxWidth: "sm", mx: "auto", px: 3, py: 6 }}>
       <Box sx={{ textAlign: "center", mb: 6 }}>
-        <Typography
-          variant="h1"
-          sx={{
-            background: "linear-gradient(to right, #ffffff, #94a3b8)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
+        <Typography variant="h1" sx={{ color: "common.white" }}>
           Create Collection Session
         </Typography>
         <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>

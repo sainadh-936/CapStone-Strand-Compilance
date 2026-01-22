@@ -94,15 +94,7 @@ export default function ReviewPage() {
             {session.patientName}
           </Typography>
         </Box>
-        <Typography
-          variant="h1"
-          sx={{
-            background: "linear-gradient(to right, #ffffff, #94a3b8)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
+        <Typography variant="h1" sx={{ color: "common.white" }}>
           {isLinkGenerated
             ? "Collection Link Ready"
             : "Generate Collection Link"}

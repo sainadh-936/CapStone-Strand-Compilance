@@ -81,15 +81,7 @@ export default function DocumentSelectionPage() {
             {session?.patientName}
           </Typography>
         </Box>
-        <Typography
-          variant="h1"
-          sx={{
-            background: "linear-gradient(to right, #ffffff, #94a3b8)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
+        <Typography variant="h1" sx={{ color: "common.white" }}>
           Select Required Documents
         </Typography>
         <Typography sx={{ color: "grey.400", mt: 2, fontSize: "1.125rem" }}>
@@ -110,7 +102,7 @@ export default function DocumentSelectionPage() {
                 transition: "all 0.2s ease",
                 ...(isSelected && {
                   borderColor: "primary.main",
-                  bgcolor: "rgba(139, 92, 246, 0.1)",
+                  bgcolor: "rgba(59, 130, 246, 0.1)",
                 }),
               }}
             >
@@ -125,7 +117,7 @@ export default function DocumentSelectionPage() {
                     justifyContent: "center",
                     fontSize: "1.5rem",
                     bgcolor: isSelected
-                      ? "rgba(139, 92, 246, 0.3)"
+                      ? "rgba(59, 130, 246, 0.2)"
                       : "grey.800",
                   }}
                 >
