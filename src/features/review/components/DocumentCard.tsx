@@ -70,15 +70,39 @@ export function DocumentCard({
           {/* Show uploaded image */}
           {submission.imageUrl && (
             <Box sx={{ mb: 2 }}>
-              <Typography
+              <Box
                 sx={{
-                  fontSize: "0.75rem",
-                  color: "grey.500",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                   mb: 1,
                 }}
               >
-                📷 Uploaded Image
-              </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "0.75rem",
+                    color: "grey.500",
+                  }}
+                >
+                  📷 Uploaded Image
+                </Typography>
+                <Box
+                  component="a"
+                  href={submission.imageUrl}
+                  download={`${docType}-document.png`}
+                  sx={{
+                    fontSize: "0.7rem",
+                    color: "primary.main",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  ⬇️ Download
+                </Box>
+              </Box>
               <Box
                 component="img"
                 src={submission.imageUrl}

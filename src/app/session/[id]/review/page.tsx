@@ -97,7 +97,9 @@ export default function ReviewPage() {
           🔗 Generate Shareable Link
         </Button>
       ) : (
-        <ShareLinkCard submissionUrl={getSubmissionUrl()} />
+        session.status !== "submitted" && (
+          <ShareLinkCard submissionUrl={getSubmissionUrl()} />
+        )
       )}
 
       <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
