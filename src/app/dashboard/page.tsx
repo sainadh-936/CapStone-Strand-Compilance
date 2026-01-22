@@ -9,6 +9,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { Button, Card, Badge } from "@/components/ui";
 import { getSessions, deleteSession } from "@/lib/storage";
 import type { Session } from "@/types";
+import { CircularProgress } from "@mui/material";
 
 export default function DashboardPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -26,13 +27,14 @@ export default function DashboardPage() {
     return (
       <Box
         sx={{
+          minHeight: "100vh",
+          bgcolor: "background.default",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "60vh",
         }}
       >
-        <Typography>Loading sessions...</Typography>
+        <CircularProgress color="primary" />
       </Box>
     );
   }
