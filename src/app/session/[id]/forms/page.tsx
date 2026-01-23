@@ -101,24 +101,34 @@ export default function FormBuilderPage() {
             justifyContent: "center",
           }}
         >
-          <Chip label="Step 3 of 4" size="small" sx={{ bgcolor: "grey.800" }} />
+          <Chip
+            label="Step 3 of 4"
+            size="small"
+            sx={{ bgcolor: "primary.main", color: "common.white" }}
+          />
           <Typography
-            sx={{ color: "grey.400", display: { xs: "none", sm: "block" } }}
+            sx={{
+              color: "text.secondary",
+              display: { xs: "none", sm: "block" },
+            }}
           >
             •
           </Typography>
           <Typography
-            sx={{ color: "grey.400", fontSize: { xs: "0.875rem", sm: "1rem" } }}
+            sx={{
+              color: "text.secondary",
+              fontSize: { xs: "0.875rem", sm: "1rem" },
+            }}
           >
             {session.patientName}
           </Typography>
         </Box>
-        <Typography variant="h1" sx={{ color: "common.white" }}>
+        <Typography variant="h1" sx={{ color: "text.primary" }}>
           Build Digital Forms
         </Typography>
         <Typography
           sx={{
-            color: "grey.400",
+            color: "text.secondary",
             mt: { xs: 1, sm: 2 },
             fontSize: { xs: "0.9375rem", sm: "1.125rem" },
           }}
@@ -144,7 +154,7 @@ export default function FormBuilderPage() {
                     ? "success.main"
                     : idx === currentDocIndex
                       ? "primary.main"
-                      : "grey.700",
+                      : "grey.300",
               }}
               title={info?.name}
             />

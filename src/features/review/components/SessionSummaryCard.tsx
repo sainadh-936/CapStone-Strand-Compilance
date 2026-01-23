@@ -26,24 +26,24 @@ export function SessionSummaryCard({
         }}
       >
         <Box>
-          <Typography variant="h4" sx={{ color: "common.white" }}>
+          <Typography variant="h4" sx={{ color: "text.primary" }}>
             {session.patientName}
           </Typography>
-          <Typography sx={{ color: "grey.400" }}>
+          <Typography sx={{ color: "text.secondary" }}>
             📱 {session.phoneNumber}
           </Typography>
         </Box>
         <Badge status={session.status} />
       </Box>
 
-      <Divider sx={{ my: 3, borderColor: "grey.800" }} />
+      <Divider sx={{ my: 3, borderColor: "divider" }} />
 
       <Box>
         <Typography
           sx={{
             fontSize: "0.875rem",
             fontWeight: 500,
-            color: "grey.400",
+            color: "text.secondary",
             mb: 2,
           }}
         >

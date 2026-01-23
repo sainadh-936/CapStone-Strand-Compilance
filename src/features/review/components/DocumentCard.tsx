@@ -26,11 +26,9 @@ export function DocumentCard({
       sx={{
         p: 2,
         borderRadius: 1,
-        bgcolor: hasSubmission
-          ? "rgba(34, 197, 94, 0.1)"
-          : "rgba(255, 255, 255, 0.03)",
+        bgcolor: hasSubmission ? "rgba(34, 197, 94, 0.08)" : "grey.50",
         border: "1px solid",
-        borderColor: hasSubmission ? "rgba(34, 197, 94, 0.3)" : "grey.800",
+        borderColor: hasSubmission ? "rgba(34, 197, 94, 0.3)" : "grey.200",
       }}
     >
       <Box
@@ -43,7 +41,7 @@ export function DocumentCard({
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography>{info?.icon}</Typography>
-          <Typography sx={{ color: "common.white", fontSize: "0.875rem" }}>
+          <Typography sx={{ color: "text.primary", fontSize: "0.875rem" }}>
             {info?.name}
           </Typography>
           {hasSubmission && (
@@ -51,7 +49,7 @@ export function DocumentCard({
               label="Submitted"
               size="small"
               sx={{
-                bgcolor: "rgba(34, 197, 94, 0.2)",
+                bgcolor: "rgba(34, 197, 94, 0.15)",
                 color: "success.main",
                 fontSize: "0.7rem",
                 height: 20,
@@ -59,7 +57,7 @@ export function DocumentCard({
             />
           )}
         </Box>
-        <Typography sx={{ fontSize: "0.75rem", color: "grey.500" }}>
+        <Typography sx={{ fontSize: "0.75rem", color: "text.disabled" }}>
           {fieldCount > 0 ? `${fieldCount} fields` : "Image only"}
         </Typography>
       </Box>

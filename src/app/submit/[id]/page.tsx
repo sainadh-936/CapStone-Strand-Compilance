@@ -89,10 +89,10 @@ export default function PublicSubmissionPage() {
       >
         <Card sx={{ textAlign: "center", maxWidth: 320 }}>
           <Typography sx={{ fontSize: "3rem", mb: 2 }}>🔗</Typography>
-          <Typography variant="h3" sx={{ color: "common.white", mb: 1 }}>
+          <Typography variant="h3" sx={{ color: "text.primary", mb: 1 }}>
             Link Not Found
           </Typography>
-          <Typography sx={{ color: "grey.400" }}>
+          <Typography sx={{ color: "text.secondary" }}>
             This submission link is invalid or has expired.
           </Typography>
         </Card>
@@ -114,10 +114,10 @@ export default function PublicSubmissionPage() {
       >
         <Card sx={{ textAlign: "center", maxWidth: 320 }}>
           <Typography sx={{ fontSize: "3rem", mb: 2 }}>✅</Typography>
-          <Typography variant="h3" sx={{ color: "common.white", mb: 1 }}>
+          <Typography variant="h3" sx={{ color: "text.primary", mb: 1 }}>
             Submission Complete
           </Typography>
-          <Typography sx={{ color: "grey.400" }}>
+          <Typography sx={{ color: "text.secondary" }}>
             Thank you! Your documents have been submitted successfully.
           </Typography>
         </Card>
@@ -246,10 +246,10 @@ export default function PublicSubmissionPage() {
           >
             S
           </Box>
-          <Typography variant="h3" sx={{ color: "common.white" }}>
+          <Typography variant="h3" sx={{ color: "text.primary" }}>
             {session.patientName}
           </Typography>
-          <Typography sx={{ color: "grey.400", fontSize: "0.875rem" }}>
+          <Typography sx={{ color: "text.secondary", fontSize: "0.875rem" }}>
             Document Submission
           </Typography>
         </Box>
@@ -269,7 +269,7 @@ export default function PublicSubmissionPage() {
                     ? "success.main"
                     : idx === currentDocIndex
                       ? "primary.main"
-                      : "grey.800",
+                      : "grey.200",
               }}
             />
           ))}
@@ -281,10 +281,10 @@ export default function PublicSubmissionPage() {
             <Typography sx={{ fontSize: "2.5rem", mb: 1 }}>
               {currentDocInfo?.icon}
             </Typography>
-            <Typography variant="h4" sx={{ color: "common.white" }}>
+            <Typography variant="h4" sx={{ color: "text.primary" }}>
               {currentDocInfo?.name}
             </Typography>
-            <Typography sx={{ fontSize: "0.875rem", color: "grey.400" }}>
+            <Typography sx={{ fontSize: "0.875rem", color: "text.secondary" }}>
               Document {currentDocIndex + 1} of {totalDocs}
             </Typography>
           </Box>
@@ -300,12 +300,12 @@ export default function PublicSubmissionPage() {
           {/* Digital Form Fields */}
           {currentSchema?.fields && currentSchema.fields.length > 0 && (
             <>
-              <Divider sx={{ my: 3, borderColor: "grey.800" }} />
+              <Divider sx={{ my: 3, borderColor: "divider" }} />
               <Typography
                 sx={{
                   fontSize: "0.875rem",
                   fontWeight: 500,
-                  color: "grey.400",
+                  color: "text.secondary",
                   mb: 2,
                 }}
               >
@@ -327,7 +327,7 @@ export default function PublicSubmissionPage() {
           )}
 
           {/* Actions */}
-          <Divider sx={{ my: 3, borderColor: "grey.800" }} />
+          <Divider sx={{ my: 3, borderColor: "divider" }} />
           {isLastDoc ? (
             <Button
               onClick={handleSubmitAll}
@@ -408,18 +408,20 @@ function ImageUploader({
             width: "100%",
             height: 192,
             border: "2px dashed",
-            borderColor: "grey.700",
+            borderColor: "grey.300",
             borderRadius: 3,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            color: "grey.400",
+            color: "text.secondary",
             cursor: "pointer",
             transition: "all 0.2s ease",
+            bgcolor: "grey.50",
             "&:hover": {
               borderColor: "primary.main",
-              color: "primary.light",
+              color: "primary.main",
+              bgcolor: "rgba(99, 102, 241, 0.05)",
             },
           }}
         >

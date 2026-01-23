@@ -34,12 +34,14 @@ export function ShareLinkCard({ submissionUrl }: ShareLinkCardProps) {
     <Card
       sx={{
         background:
-          "linear-gradient(to bottom right, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.15))",
-        borderColor: "rgba(139, 92, 246, 0.3)",
+          "linear-gradient(to bottom right, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08))",
+        borderColor: "primary.light",
       }}
     >
       <Box sx={{ mb: 2 }}>
-        <Typography sx={{ fontSize: "0.875rem", color: "grey.400", mb: 1 }}>
+        <Typography
+          sx={{ fontSize: "0.875rem", color: "text.secondary", mb: 1 }}
+        >
           Submission Link
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
@@ -50,7 +52,7 @@ export function ShareLinkCard({ submissionUrl }: ShareLinkCardProps) {
             size="small"
             sx={{
               "& .MuiOutlinedInput-root": {
-                bgcolor: "rgba(15, 23, 42, 0.5)",
+                bgcolor: "background.paper",
                 fontSize: "0.875rem",
               },
             }}

@@ -69,7 +69,7 @@ export default function DashboardPage() {
           <Typography
             variant="h1"
             sx={{
-              color: "common.white",
+              color: "text.primary",
               fontSize: { xs: "1.5rem", sm: "1.875rem" },
             }}
           >
@@ -77,7 +77,7 @@ export default function DashboardPage() {
           </Typography>
           <Typography
             sx={{
-              color: "grey.400",
+              color: "text.secondary",
               mt: { xs: 1, sm: 2 },
               fontSize: { xs: "1rem", sm: "1.125rem" },
             }}
@@ -98,10 +98,10 @@ export default function DashboardPage() {
       {sessions.length === 0 ? (
         <Card sx={{ textAlign: "center", py: 8 }}>
           <Typography sx={{ fontSize: "3.75rem", mb: 2 }}>📋</Typography>
-          <Typography variant="h3" sx={{ color: "common.white", mb: 1 }}>
+          <Typography variant="h3" sx={{ color: "text.primary", mb: 1 }}>
             No sessions yet
           </Typography>
-          <Typography sx={{ color: "grey.400", mb: 3 }}>
+          <Typography sx={{ color: "text.secondary", mb: 3 }}>
             Create your first collection session to get started
           </Typography>
           <Link href="/session/new">
@@ -178,7 +178,7 @@ function SessionCard({
             <Typography
               variant="h4"
               sx={{
-                color: "common.white",
+                color: "text.primary",
                 fontSize: { xs: "0.9375rem", sm: "1rem" },
                 wordBreak: "break-word",
               }}
@@ -187,7 +187,9 @@ function SessionCard({
             </Typography>
             <Badge status={session.status} />
           </Box>
-          <Typography sx={{ color: "grey.400", fontSize: "0.875rem", mb: 1.5 }}>
+          <Typography
+            sx={{ color: "text.secondary", fontSize: "0.875rem", mb: 1.5 }}
+          >
             📱 {session.phoneNumber}
             {session.city && ` • 📍 ${session.city}`}
           </Typography>
@@ -202,10 +204,18 @@ function SessionCard({
                   mb: 0.5,
                 }}
               >
-                <Typography sx={{ color: "grey.400", fontSize: "0.875rem" }}>
+                <Typography
+                  sx={{ color: "text.secondary", fontSize: "0.875rem" }}
+                >
                   Documentation
                 </Typography>
-                <Typography sx={{ color: "grey.300", fontSize: "0.875rem" }}>
+                <Typography
+                  sx={{
+                    color: "text.primary",
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                  }}
+                >
                   {completedDocs}/{totalDocs} complete
                 </Typography>
               </Box>
@@ -215,7 +225,7 @@ function SessionCard({
                 sx={{
                   height: 8,
                   borderRadius: 4,
-                  bgcolor: "grey.800",
+                  bgcolor: "grey.200",
                   "& .MuiLinearProgress-bar": {
                     background: "linear-gradient(to right, #8b5cf6, #6366f1)",
                     borderRadius: 4,
@@ -225,7 +235,7 @@ function SessionCard({
             </Box>
           )}
 
-          <Typography sx={{ fontSize: "0.75rem", color: "grey.500" }}>
+          <Typography sx={{ fontSize: "0.75rem", color: "text.disabled" }}>
             Created{" "}
             {new Date(session.createdAt).toLocaleDateString("en-IN", {
               day: "numeric",

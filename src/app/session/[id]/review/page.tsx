@@ -86,32 +86,42 @@ export default function ReviewPage() {
             justifyContent: "center",
           }}
         >
-          <Chip label="Step 4 of 4" size="small" sx={{ bgcolor: "grey.800" }} />
+          <Chip
+            label="Step 4 of 4"
+            size="small"
+            sx={{ bgcolor: "primary.main", color: "common.white" }}
+          />
           <Typography
-            sx={{ color: "grey.400", display: { xs: "none", sm: "block" } }}
+            sx={{
+              color: "text.secondary",
+              display: { xs: "none", sm: "block" },
+            }}
           >
             •
           </Typography>
           <Typography
-            sx={{ color: "grey.400", fontSize: { xs: "0.875rem", sm: "1rem" } }}
+            sx={{
+              color: "text.secondary",
+              fontSize: { xs: "0.875rem", sm: "1rem" },
+            }}
           >
             {session.patientName}
           </Typography>
         </Box>
-        <Typography variant="h1" sx={{ color: "common.white" }}>
+        <Typography variant="h1" sx={{ color: "text.primary" }}>
           {isLinkGenerated
             ? "Collection Link Ready"
             : "Generate Collection Link"}
         </Typography>
         <Typography
           sx={{
-            color: "grey.400",
+            color: "text.secondary",
             mt: { xs: 1, sm: 2 },
             fontSize: { xs: "0.9375rem", sm: "1.125rem" },
           }}
         >
           {isLinkGenerated
-            ? "Share this link with the patient or phlebotomist"
+            ? "Share this link with the patient or phlebo"
             : "Review the session details and generate a shareable link"}
         </Typography>
       </Box>

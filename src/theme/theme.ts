@@ -4,11 +4,11 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
     primary: {
-      main: "#6366f1", // indigo-500
-      light: "#818cf8", // indigo-400
-      dark: "#4f46e5", // indigo-600
+      main: "#4f46e5", // indigo-600
+      light: "#6366f1", // indigo-500
+      dark: "#4338ca", // indigo-700
     },
     secondary: {
       main: "#64748b", // slate-500
@@ -28,15 +28,15 @@ const theme = createTheme({
       main: "#6366f1",
     },
     background: {
-      default: "#0f172a", // slate-900
-      paper: "#1e293b", // slate-800
+      default: "#f8fafc", // slate-50
+      paper: "#ffffff", // white
     },
     text: {
-      primary: "#f8fafc", // slate-50
-      secondary: "#94a3b8", // slate-400
-      disabled: "#64748b", // slate-500
+      primary: "#1e293b", // slate-800
+      secondary: "#64748b", // slate-500
+      disabled: "#94a3b8", // slate-400
     },
-    divider: "#334155", // slate-700
+    divider: "#e2e8f0", // slate-200
   },
   typography: {
     fontFamily:
@@ -116,10 +116,11 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: "#1e293b",
-          border: "1px solid #334155",
-          borderRadius: 8,
-          boxShadow: "none",
+          backgroundColor: "#ffffff",
+          border: "1px solid #e2e8f0",
+          borderRadius: 12,
+          boxShadow:
+            "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
           "@media (max-width:600px)": {
             borderRadius: 10,
           },
@@ -131,12 +132,12 @@ const theme = createTheme({
         root: {
           "& .MuiOutlinedInput-root": {
             borderRadius: 6,
-            backgroundColor: "#0f172a",
+            backgroundColor: "#ffffff",
             "& fieldset": {
-              borderColor: "#334155",
+              borderColor: "#e2e8f0",
             },
             "&:hover fieldset": {
-              borderColor: "#475569",
+              borderColor: "#cbd5e1",
             },
             "&.Mui-focused fieldset": {
               borderColor: "#6366f1",
@@ -149,12 +150,12 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 6,
-          backgroundColor: "#0f172a",
+          backgroundColor: "#ffffff",
           "& fieldset": {
-            borderColor: "#334155",
+            borderColor: "#e2e8f0",
           },
           "&:hover fieldset": {
-            borderColor: "#475569",
+            borderColor: "#cbd5e1",
           },
           "&.Mui-focused fieldset": {
             borderColor: "#6366f1",
@@ -180,7 +181,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 2,
-          backgroundColor: "#334155",
+          backgroundColor: "#e2e8f0",
         },
         bar: {
           borderRadius: 2,
@@ -192,7 +193,8 @@ const theme = createTheme({
         root: {
           backgroundColor: "#312e81", // indigo-900
           borderBottom: "none",
-          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+          boxShadow:
+            "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
         },
       },
     },

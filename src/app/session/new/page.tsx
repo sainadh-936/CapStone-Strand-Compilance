@@ -86,7 +86,7 @@ export default function NewSessionPage() {
         <Typography
           variant="h1"
           sx={{
-            color: "common.white",
+            color: "text.primary",
             fontSize: { xs: "1.375rem", sm: "1.875rem" },
           }}
         >
@@ -94,7 +94,7 @@ export default function NewSessionPage() {
         </Typography>
         <Typography
           sx={{
-            color: "grey.400",
+            color: "text.secondary",
             mt: { xs: 1, sm: 2 },
             fontSize: { xs: "0.9375rem", sm: "1.125rem" },
           }}

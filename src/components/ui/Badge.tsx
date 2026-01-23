@@ -13,33 +13,33 @@ const statusConfig: Record<
 > = {
   created: {
     label: "Created",
-    color: "#c7d2fe", // indigo-200
-    bgcolor: "rgba(55, 48, 163, 0.4)", // indigo-800/40
-    borderColor: "#4338ca", // indigo-700
+    color: "#4338ca", // indigo-700
+    bgcolor: "#e0e7ff", // indigo-100
+    borderColor: "#c7d2fe", // indigo-200
   },
   link_generated: {
     label: "Link Generated",
-    color: "#a5b4fc", // indigo-300
-    bgcolor: "rgba(79, 70, 229, 0.3)", // indigo-600/30
-    borderColor: "#6366f1", // indigo-500
+    color: "#1d4ed8", // blue-700
+    bgcolor: "#dbeafe", // blue-100
+    borderColor: "#bfdbfe", // blue-200
   },
   in_progress: {
     label: "In Progress",
-    color: "#fbbf24", // amber-400
-    bgcolor: "rgba(120, 53, 15, 0.5)", // amber-900/50
-    borderColor: "#78350f",
+    color: "#b45309", // amber-700
+    bgcolor: "#fef3c7", // amber-100
+    borderColor: "#fde68a", // amber-200
   },
   submitted: {
     label: "Submitted",
-    color: "#34d399", // emerald-400
-    bgcolor: "rgba(6, 78, 59, 0.5)", // emerald-900/50
-    borderColor: "#064e3b",
+    color: "#047857", // emerald-700
+    bgcolor: "#d1fae5", // emerald-100
+    borderColor: "#a7f3d0", // emerald-200
   },
   incomplete: {
     label: "Incomplete",
-    color: "#f87171", // red-400
-    bgcolor: "rgba(127, 29, 29, 0.5)", // red-900/50
-    borderColor: "#7f1d1d",
+    color: "#b91c1c", // red-700
+    bgcolor: "#fee2e2", // red-100
+    borderColor: "#fecaca", // red-200
   },
 };
 

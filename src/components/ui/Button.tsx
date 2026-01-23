@@ -42,27 +42,28 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       switch (variant) {
         case "secondary":
           return {
-            bgcolor: "grey.800",
-            color: "common.white",
-            "&:hover": { bgcolor: "grey.700" },
+            bgcolor: "grey.100",
+            color: "text.primary",
+            "&:hover": { bgcolor: "grey.200" },
           };
         case "outline":
           return {
-            borderColor: "grey.700",
+            borderColor: "grey.300",
             borderWidth: 2,
-            color: "grey.300",
+            color: "text.secondary",
             "&:hover": {
-              borderColor: "grey.600",
-              bgcolor: "rgba(30, 41, 59, 0.5)",
+              borderColor: "primary.main",
+              color: "primary.main",
+              bgcolor: "rgba(99, 102, 241, 0.05)",
               borderWidth: 2,
             },
           };
         case "ghost":
           return {
-            color: "grey.400",
+            color: "text.secondary",
             "&:hover": {
-              color: "common.white",
-              bgcolor: "rgba(30, 41, 59, 0.5)",
+              color: "primary.main",
+              bgcolor: "rgba(99, 102, 241, 0.08)",
             },
           };
         default:

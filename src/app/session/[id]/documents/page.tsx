@@ -92,24 +92,34 @@ export default function DocumentSelectionPage() {
             justifyContent: "center",
           }}
         >
-          <Chip label="Step 2 of 4" size="small" sx={{ bgcolor: "grey.800" }} />
+          <Chip
+            label="Step 2 of 4"
+            size="small"
+            sx={{ bgcolor: "primary.main", color: "common.white" }}
+          />
           <Typography
-            sx={{ color: "grey.400", display: { xs: "none", sm: "block" } }}
+            sx={{
+              color: "text.secondary",
+              display: { xs: "none", sm: "block" },
+            }}
           >
             •
           </Typography>
           <Typography
-            sx={{ color: "grey.400", fontSize: { xs: "0.875rem", sm: "1rem" } }}
+            sx={{
+              color: "text.secondary",
+              fontSize: { xs: "0.875rem", sm: "1rem" },
+            }}
           >
             {session?.patientName}
           </Typography>
         </Box>
-        <Typography variant="h1" sx={{ color: "common.white" }}>
+        <Typography variant="h1" sx={{ color: "text.primary" }}>
           Select Required Documents
         </Typography>
         <Typography
           sx={{
-            color: "grey.400",
+            color: "text.secondary",
             mt: { xs: 1, sm: 2 },
             fontSize: { xs: "0.9375rem", sm: "1.125rem" },
           }}
@@ -146,17 +156,19 @@ export default function DocumentSelectionPage() {
                     justifyContent: "center",
                     fontSize: "1.5rem",
                     bgcolor: isSelected
-                      ? "rgba(59, 130, 246, 0.2)"
-                      : "grey.800",
+                      ? "rgba(99, 102, 241, 0.15)"
+                      : "grey.100",
                   }}
                 >
                   {doc.icon}
                 </Box>
                 <Box sx={{ flex: 1 }}>
-                  <Typography sx={{ fontWeight: 600, color: "common.white" }}>
+                  <Typography sx={{ fontWeight: 600, color: "text.primary" }}>
                     {doc.name}
                   </Typography>
-                  <Typography sx={{ fontSize: "0.875rem", color: "grey.400" }}>
+                  <Typography
+                    sx={{ fontSize: "0.875rem", color: "text.secondary" }}
+                  >
                     {doc.description}
                   </Typography>
                 </Box>

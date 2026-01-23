@@ -49,9 +49,9 @@ export function SortableField({
       ref={setNodeRef}
       style={style}
       sx={{
-        bgcolor: "rgba(30, 41, 59, 0.5)",
+        bgcolor: "grey.50",
         border: 1,
-        borderColor: isDragging ? "primary.main" : "grey.700",
+        borderColor: isDragging ? "primary.main" : "grey.200",
         borderRadius: 3,
         p: 2,
         opacity: isDragging ? 0.5 : 1,

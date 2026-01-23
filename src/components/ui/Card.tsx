@@ -24,9 +24,9 @@ export function Card({ children, hover = false, onClick, sx }: CardProps) {
         borderRadius: 3,
         ...(hover && {
           "&:hover": {
-            borderColor: "primary.dark",
+            borderColor: "primary.main",
             transform: "translateY(-2px)",
-            boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.15)",
+            boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.2)",
           },
         }),
         ...sx,
@@ -54,11 +54,11 @@ export function CardHeader({ title, subtitle, action }: CardHeaderProps) {
       }}
     >
       <Box>
-        <Typography variant="h4" sx={{ color: "common.white" }}>
+        <Typography variant="h4" sx={{ color: "text.primary" }}>
           {title}
         </Typography>
         {subtitle && (
-          <Typography variant="body2" sx={{ color: "grey.400", mt: 0.5 }}>
+          <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
             {subtitle}
           </Typography>
         )}

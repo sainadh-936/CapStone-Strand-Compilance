@@ -93,11 +93,11 @@ export function FormBuilder({
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1 }}>
           <Typography sx={{ fontSize: "1.875rem" }}>{docInfo?.icon}</Typography>
-          <Typography variant="h3" sx={{ color: "common.white" }}>
+          <Typography variant="h3" sx={{ color: "text.primary" }}>
             {docInfo?.name}
           </Typography>
         </Box>
-        <Typography sx={{ color: "grey.400" }}>
+        <Typography sx={{ color: "text.secondary" }}>
           Build a digital form for this document (optional)
         </Typography>
       </Box>
@@ -128,16 +128,16 @@ export function FormBuilder({
           sx={{
             textAlign: "center",
             py: 6,
-            bgcolor: "rgba(15, 23, 42, 0.3)",
+            bgcolor: "grey.50",
             borderRadius: 3,
             border: "2px dashed",
-            borderColor: "grey.700",
+            borderColor: "grey.300",
           }}
         >
-          <Typography sx={{ color: "grey.400", mb: 1 }}>
+          <Typography sx={{ color: "text.secondary", mb: 1 }}>
             No fields added yet
           </Typography>
-          <Typography sx={{ fontSize: "0.875rem", color: "grey.500" }}>
+          <Typography sx={{ fontSize: "0.875rem", color: "text.disabled" }}>
             Add fields above, or skip to use image upload only
           </Typography>
         </Box>
