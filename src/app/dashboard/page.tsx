@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Button, Card, Badge } from "@/components/ui";
+import { SessionSummary } from "@/components/dashboard/SessionSummary";
 import { getSessions, deleteSession } from "@/lib/storage";
 import type { Session } from "@/types";
 import { CircularProgress } from "@mui/material";
@@ -94,6 +95,8 @@ export default function DashboardPage() {
           </Button>
         </Link>
       </Box>
+
+      <SessionSummary sessions={sessions} />
 
       {sessions.length === 0 ? (
         <Card sx={{ textAlign: "center", py: 8 }}>
