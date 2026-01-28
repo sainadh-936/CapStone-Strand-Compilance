@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import Box from "@mui/material/Box";
@@ -15,19 +15,28 @@ import {
   createSessionSchema,
   type CreateSessionInput,
 } from "@/features/sessions/schemas";
-import { saveSession } from "@/lib/storage";
-import type { Session } from "@/types";
+import { saveSession, getActiveAgents } from "@/lib/storage";
+import type { Session, Agent } from "@/types";
 
 export default function NewSessionPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [formData, setFormData] = useState<Partial<CreateSessionInput>>({
     patientName: "",
     phoneNumber: "",
     gender: undefined,
     city: "",
+    agentId: "",
   });
+
+  useEffect(() => {
+    async function loadAgents() {
+      setAgents(getActiveAgents());
+    }
+    loadAgents();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +69,7 @@ export default function NewSessionPage() {
       age: result.data.age,
       gender: result.data.gender,
       city: result.data.city,
+      agentId: result.data.agentId || undefined,
       status: "created",
       requiredDocuments: [],
       formSchemas: {},
@@ -191,6 +201,30 @@ export default function NewSessionPage() {
               }
               error={errors.city}
             />
+
+            {agents.length > 0 && (
+              <FormControl fullWidth>
+                <InputLabel>Assign Agent</InputLabel>
+                <Select
+                  value={formData.agentId || ""}
+                  label="Assign Agent"
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      agentId: e.target.value || undefined,
+                    }))
+                  }
+                  sx={{ minHeight: 48 }}
+                >
+                  <MenuItem value="">No agent (assign later)</MenuItem>
+                  {agents.map((agent) => (
+                    <MenuItem key={agent.id} value={agent.id}>
+                      {agent.name} • {agent.phone}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
 
             <Box sx={{ pt: 3 }}>
               <Button

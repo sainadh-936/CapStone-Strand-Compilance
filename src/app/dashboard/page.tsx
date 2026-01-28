@@ -8,20 +8,22 @@ import Stack from "@mui/material/Stack";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Button, Card, Badge } from "@/components/ui";
 import { SessionSummary } from "@/components/dashboard/SessionSummary";
-import { getSessions, deleteSession } from "@/lib/storage";
-import type { Session } from "@/types";
+import { getSessions, deleteSession, getAgents } from "@/lib/storage";
+import type { Session, Agent } from "@/types";
 import { CircularProgress } from "@mui/material";
 
 export default function DashboardPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchSessions() {
+    async function fetchData() {
       setSessions(getSessions());
+      setAgents(getAgents());
       setIsLoading(false);
     }
-    fetchSessions();
+    fetchData();
   }, []);
 
   if (isLoading) {
@@ -117,6 +119,7 @@ export default function DashboardPage() {
             <SessionCard
               key={session.id}
               session={session}
+              agents={agents}
               onDelete={() => handleDelete(session.id)}
             />
           ))}
@@ -128,15 +131,22 @@ export default function DashboardPage() {
 
 function SessionCard({
   session,
+  agents,
   onDelete,
 }: {
   session: Session;
+  agents: Agent[];
   onDelete: () => void;
 }) {
   const completedDocs = session.submissions.length;
   const totalDocs = session.requiredDocuments.length;
   const completionPercent =
     totalDocs > 0 ? Math.round((completedDocs / totalDocs) * 100) : 0;
+
+  // Find assigned agent
+  const assignedAgent = session.agentId
+    ? agents.find((a) => a.id === session.agentId)
+    : null;
 
   // Determine next action based on status
   const getNextAction = () => {
@@ -195,6 +205,7 @@ function SessionCard({
           >
             📱 {session.phoneNumber}
             {session.city && ` • 📍 ${session.city}`}
+            {assignedAgent && ` • 👤 ${assignedAgent.name}`}
           </Typography>
 
           {totalDocs > 0 && (
