@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/theme";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -62,6 +63,7 @@ export default function RootLayout({
               </Box>
               <Footer />
             </Box>
+            <Analytics />
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
