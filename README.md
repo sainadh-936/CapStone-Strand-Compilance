@@ -11,25 +11,52 @@ Third-party phlebotomists often skip documentation (TRFs, prescriptions, reports
 ```
 Ops creates pickup session
         ↓
+Ops assigns agent (optional)
+        ↓
 Ops selects required documents
         ↓
 Ops builds digital forms (optional)
         ↓
 System generates shareable link
         ↓
+Ops can reassign agent anytime (before submission)
+        ↓
 Pablo/Patient submits via mobile
         ↓
 Ops monitors completion on dashboard
+        ↓
+System calculates agent incentives
+        ↓
+Ops approves incentives & exports payouts
 ```
 
 ## 📱 Key Features
 
+### Session Management
 - **Pickup Session Management** — Create and track sample collection sessions
 - **Session Summary Dashboard** — View statistics (completed, pending, needs link)
 - **Dynamic Form Builder** — Ops can design custom forms per document type
 - **Shareable Links** — Unique URLs for each session (no login required)
 - **Mobile-First Upload** — Camera capture + gallery upload for documents
 - **Real-time Dashboard** — Track submission status across all sessions
+
+### Agent Management
+- **Agent Directory** — Add, edit, and manage phlebotomist agents
+- **Agent Status** — Mark agents as active or inactive
+- **Agent Assignment** — Assign agents to sessions during creation
+- **Agent Reassignment** — Change assigned agent anytime before session is submitted
+  - Available on Dashboard (session cards)
+  - Available on Review page (session details)
+  - Locked once session status is `submitted`
+
+### Incentive System
+- **Automatic Calculation** — Incentives calculated when session is submitted
+- **Incentive Components:**
+  - Per Session Bonus — Base amount for completing a session
+  - On-Time Bonus — Extra for submitting within time window
+  - Compliance Bonus — Extra for complete documentation
+- **Approval Workflow** — Ops can approve/reject calculated incentives
+- **Payout Reports** — Export approved incentives for payment processing
 
 ## 🛠 Tech Stack
 
@@ -45,13 +72,17 @@ Ops monitors completion on dashboard
 ```
 src/
 ├── app/                      # Routes and layouts
+│   ├── agents/               # Agent management
+│   │   └── [id]/             # Agent details
 │   ├── dashboard/            # Ops monitoring with session summary
+│   ├── incentives/           # Incentive management
+│   │   └── reports/          # Payout reports & export
 │   ├── session/              # Session management
 │   │   ├── new/              # Create new session
 │   │   └── [id]/             # Session details
 │   │       ├── documents/    # Document selection
 │   │       ├── forms/        # Form builder
-│   │       └── review/       # Review & generate link
+│   │       └── review/       # Review, agent assignment & generate link
 │   └── submit/[id]/          # Public submission page
 ├── components/               # Reusable UI components
 │   ├── dashboard/            # Dashboard-specific components
@@ -59,8 +90,10 @@ src/
 │   ├── layout/               # Header, Footer
 │   └── ui/                   # Base components (Button, Card, Badge, Input)
 ├── features/                 # Business domain modules
+│   ├── agents/               # Agent management components & schemas
 │   ├── documents/            # Document type definitions
 │   ├── forms/                # Form builder & field components
+│   ├── incentives/           # Incentive calculation & components
 │   ├── review/               # Review page components
 │   └── sessions/             # Session schemas & validation
 ├── lib/                      # Utilities and helpers
@@ -91,8 +124,24 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `created` | Session created, documents not yet selected |
 | `link_generated` | Shareable link created, awaiting submission |
 | `in_progress` | Patient has started submitting documents |
-| `submitted` | All required documents submitted |
+| `submitted` | All required documents submitted (agent locked) |
 | `incomplete` | Partial submission or issues |
+
+## 👤 Agent Statuses
+
+| Status | Description |
+|--------|-------------|
+| `active` | Agent available for assignment |
+| `inactive` | Agent not available for new assignments |
+
+## 💰 Incentive Statuses
+
+| Status | Description |
+|--------|-------------|
+| `pending` | Incentive calculated, awaiting approval |
+| `approved` | Incentive approved for payout |
+| `rejected` | Incentive rejected |
+| `paid` | Incentive paid out |
 
 ## 📖 Documentation
 
@@ -104,6 +153,5 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - Backend API integration
 - Offline upload queue
 - Role-based access control
-- Incentive auto-calculation
 - Analytics dashboard
 - Theme customization (Strand Life Sciences branding)

@@ -3,15 +3,23 @@
 ```
 Ops creates pickup session
         ↓
+Ops assigns agent (optional)
+        ↓
 Ops selects required documents
         ↓
 Ops builds digital forms (optional)
         ↓
 System generates shareable link
         ↓
+Ops can reassign agent anytime (before submission)
+        ↓
 Pablo/Patient submits via mobile
         ↓
 Ops monitors completion on dashboard
+        ↓
+System calculates agent incentives
+        ↓
+Ops approves incentives & exports payouts
 ```
 
 # Detailed Step-by-Step Workflow
@@ -27,6 +35,7 @@ Mandatory fields:
 - Patient Name
 - Phone Number
 - Optional: Age, Gender, City
+- **Agent Assignment** (optional) — Select from list of active agents
 
 Actions:
 
@@ -36,6 +45,7 @@ Actions:
 After submission:
 
 - A unique internal session ID is created
+- Agent assignment is recorded (if selected)
 - User is redirected to form selection screen
 
 ## STEP 2 — Form Selection UI
@@ -118,7 +128,17 @@ Ops sees:
 
 - Summary of required documents
 - Summary of digital fields created
+- **Agent Assignment Section** — Assign or change agent before submission
 - Button: "Generate Link"
+
+### Agent Reassignment Rules
+
+- Ops can assign/reassign agents at any time before session is submitted
+- Agent dropdown available on:
+  - Dashboard session cards
+  - Review page (session details)
+- Once session status is `submitted`, agent assignment is **locked**
+- Only active agents appear in the dropdown
 
 ### Generated Link Behavior
 
@@ -191,6 +211,7 @@ For each session:
 
 - Patient Name
 - Phone Number
+- **Agent Selector** — Dropdown to assign/change agent (if not submitted)
 - Status badge:
 
 Status Types:
@@ -198,7 +219,7 @@ Status Types:
 - Created
 - Link Generated
 - In Progress
-- Submitted
+- Submitted (agent locked)
 - Incomplete
 
 ### Detail View
@@ -209,6 +230,78 @@ Clicking a session should show:
 - Entered digital form data
 - Timestamp
 - Completion percentage
+- **Agent Assignment** — View or change assigned agent
+
+## STEP 7 — Agent Management
+
+### Screen: "Manage Agents"
+
+Ops team must see:
+
+### Agent Summary Cards
+
+- **Total Agents** — Count of all agents
+- **Active Agents** — Count of agents available for assignment
+- **Inactive Agents** — Count of disabled agents
+
+### Agent List
+
+For each agent:
+
+- Agent Name
+- Phone Number
+- Status Badge (Active/Inactive)
+- Session Count — Number of assigned sessions
+- Edit / Toggle Status buttons
+
+### Agent Form
+
+Fields:
+
+- Agent Name (required)
+- Phone Number (required)
+- Status (Active/Inactive)
+
+## STEP 8 — Incentive Management
+
+### Screen: "Incentive Dashboard"
+
+Ops team must see:
+
+### Incentive Cards
+
+For each pending incentive:
+
+- Session details (Patient Name, ID)
+- Agent Name
+- Breakdown:
+  - Per Session Bonus
+  - On-Time Bonus
+  - Compliance Bonus
+- Total Amount
+- Approve / Reject buttons
+
+### Incentive Calculation Rules
+
+Incentives are calculated automatically when:
+
+- Session status changes to `submitted`
+- Session has an assigned agent
+
+**Breakdown Components:**
+
+1. **Per Session Bonus** — Fixed amount for completing any session
+2. **On-Time Bonus** — Awarded if submitted within configured time window
+3. **Compliance Bonus** — Awarded if all required documents are complete
+
+### Screen: "Payout Reports"
+
+Ops team must see:
+
+- List of approved incentives grouped by agent
+- Total payout amount
+- Export to CSV button
+- Mark as Paid functionality
 
 # Data Storage Scope (Current Phase)
 
@@ -216,6 +309,11 @@ For now:
 
 - Store all data in frontend state / local storage / mock service
 - No backend persistence required
+- **Stored Entities:**
+  - Sessions (with agent assignments)
+  - Agents
+  - Incentives
+  - Payout Batches
 
 Later Phase:
 
@@ -251,4 +349,5 @@ Public submission UI must:
 - Backend persistence
 - Analytics dashboard
 - Regional form templates
-- Incentive auto-calculation
+- Bulk agent import
+- Incentive configuration UI (customize bonus amounts)
