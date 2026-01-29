@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Button, Card } from "@/components/ui";
 import { AgentCard, AgentForm, type AgentInput } from "@/features/agents";
@@ -162,98 +161,52 @@ export default function AgentsPage() {
 
       {/* Summary Cards */}
       {agents.length > 0 && !showForm && !editingAgent && (
-        <Grid container spacing={2} sx={{ mb: { xs: 3, sm: 4 } }}>
-          <Grid size={{ xs: 4 }}>
-            <Card
-              sx={{
-                textAlign: "center",
-                py: { xs: 2, sm: 3 },
-                background: "linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%)",
-                border: "1px solid",
-                borderColor: "info.light",
-              }}
-            >
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: { xs: 2, sm: 3 },
+            mb: { xs: 3, sm: 4 },
+          }}
+        >
+          {[
+            {
+              value: summary.total,
+              label: "Total",
+              icon: "👥",
+              color: "text.primary",
+            },
+            {
+              value: summary.active,
+              label: "Active",
+              icon: "✓",
+              color: "success.main",
+            },
+            {
+              value: summary.inactive,
+              label: "Inactive",
+              icon: "⏸",
+              color: "error.main",
+            },
+          ].map((card) => (
+            <Card key={card.label} sx={{ textAlign: "center" }}>
               <Typography
-                sx={{
-                  fontSize: { xs: "1.5rem", sm: "2rem" },
-                  fontWeight: 700,
-                  color: "info.main",
-                }}
+                sx={{ fontSize: "0.75rem", color: "text.secondary", mb: 0.5 }}
               >
-                {summary.total}
+                {card.icon} {card.label}
               </Typography>
               <Typography
                 sx={{
-                  fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                  color: "info.dark",
-                  fontWeight: 500,
+                  fontSize: "1.25rem",
+                  fontWeight: 700,
+                  color: card.color,
                 }}
               >
-                Total
+                {card.value}
               </Typography>
             </Card>
-          </Grid>
-          <Grid size={{ xs: 4 }}>
-            <Card
-              sx={{
-                textAlign: "center",
-                py: { xs: 2, sm: 3 },
-                background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
-                border: "1px solid",
-                borderColor: "success.light",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: { xs: "1.5rem", sm: "2rem" },
-                  fontWeight: 700,
-                  color: "success.main",
-                }}
-              >
-                {summary.active}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                  color: "success.dark",
-                  fontWeight: 500,
-                }}
-              >
-                Active
-              </Typography>
-            </Card>
-          </Grid>
-          <Grid size={{ xs: 4 }}>
-            <Card
-              sx={{
-                textAlign: "center",
-                py: { xs: 2, sm: 3 },
-                background: "linear-gradient(135deg, #fef2f2 0%, #fecaca 100%)",
-                border: "1px solid",
-                borderColor: "error.light",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: { xs: "1.5rem", sm: "2rem" },
-                  fontWeight: 700,
-                  color: "error.main",
-                }}
-              >
-                {summary.inactive}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                  color: "error.dark",
-                  fontWeight: 500,
-                }}
-              >
-                Inactive
-              </Typography>
-            </Card>
-          </Grid>
-        </Grid>
+          ))}
+        </Box>
       )}
 
       {/* Create Form */}
