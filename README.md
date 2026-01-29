@@ -33,6 +33,7 @@ Ops approves incentives & exports payouts
 ## 📱 Key Features
 
 ### Session Management
+
 - **Pickup Session Management** — Create and track sample collection sessions
 - **Session Summary Dashboard** — View statistics (completed, pending, needs link)
 - **Dynamic Form Builder** — Ops can design custom forms per document type
@@ -41,6 +42,7 @@ Ops approves incentives & exports payouts
 - **Real-time Dashboard** — Track submission status across all sessions
 
 ### Agent Management
+
 - **Agent Directory** — Add, edit, and manage phlebotomist agents
 - **Agent Status** — Mark agents as active or inactive
 - **Agent Assignment** — Assign agents to sessions during creation
@@ -50,6 +52,7 @@ Ops approves incentives & exports payouts
   - Locked once session status is `submitted`
 
 ### Incentive System
+
 - **Automatic Calculation** — Incentives calculated when session is submitted
 - **Incentive Components:**
   - Per Session Bonus — Base amount for completing a session
@@ -119,29 +122,29 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📊 Session Statuses
 
-| Status | Description |
-|--------|-------------|
-| `created` | Session created, documents not yet selected |
-| `link_generated` | Shareable link created, awaiting submission |
-| `in_progress` | Patient has started submitting documents |
-| `submitted` | All required documents submitted (agent locked) |
-| `incomplete` | Partial submission or issues |
+| Status           | Description                                     |
+| ---------------- | ----------------------------------------------- |
+| `created`        | Session created, documents not yet selected     |
+| `link_generated` | Shareable link created, awaiting submission     |
+| `in_progress`    | Patient has started submitting documents        |
+| `submitted`      | All required documents submitted (agent locked) |
+| `incomplete`     | Partial submission or issues                    |
 
 ## 👤 Agent Statuses
 
-| Status | Description |
-|--------|-------------|
-| `active` | Agent available for assignment |
+| Status     | Description                             |
+| ---------- | --------------------------------------- |
+| `active`   | Agent available for assignment          |
 | `inactive` | Agent not available for new assignments |
 
 ## 💰 Incentive Statuses
 
-| Status | Description |
-|--------|-------------|
-| `pending` | Incentive calculated, awaiting approval |
-| `approved` | Incentive approved for payout |
-| `rejected` | Incentive rejected |
-| `paid` | Incentive paid out |
+| Status     | Description                             |
+| ---------- | --------------------------------------- |
+| `pending`  | Incentive calculated, awaiting approval |
+| `approved` | Incentive approved for payout           |
+| `rejected` | Incentive rejected                      |
+| `paid`     | Incentive paid out                      |
 
 ## 📖 Documentation
 
