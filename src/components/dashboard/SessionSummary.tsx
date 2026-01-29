@@ -1,6 +1,7 @@
 "use client";
 
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Card } from "@/components/ui";
 import type { Session } from "@/types";
@@ -39,34 +40,30 @@ export function SessionSummary({ sessions }: SessionSummaryProps) {
     {
       value: summary.completed,
       label: "Completed",
-      gradient: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
-      borderColor: "success.light",
-      valueColor: "success.main",
-      labelColor: "success.dark",
+      icon: "✓",
+      iconBg: "#dcfce7",
+      iconColor: "#16a34a",
     },
     {
       value: summary.yetToComplete,
       label: "Yet to Complete",
-      gradient: "linear-gradient(135deg, #fefce8 0%, #fef08a 100%)",
-      borderColor: "warning.light",
-      valueColor: "warning.dark",
-      labelColor: "warning.dark",
+      icon: "⏳",
+      iconBg: "#fef3c7",
+      iconColor: "#d97706",
     },
     {
       value: summary.needsLink,
       label: "Needs Link",
-      gradient: "linear-gradient(135deg, #fef2f2 0%, #fecaca 100%)",
-      borderColor: "error.light",
-      valueColor: "error.main",
-      labelColor: "error.dark",
+      icon: "🔗",
+      iconBg: "#fee2e2",
+      iconColor: "#dc2626",
     },
     {
       value: summary.total,
       label: "Total Sessions",
-      gradient: "linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%)",
-      borderColor: "info.light",
-      valueColor: "info.main",
-      labelColor: "info.dark",
+      icon: "📊",
+      iconBg: "#e0e7ff",
+      iconColor: "#4f46e5",
     },
   ];
 
@@ -76,31 +73,59 @@ export function SessionSummary({ sessions }: SessionSummaryProps) {
         <Grid key={card.label} size={{ xs: 6, sm: 3 }}>
           <Card
             sx={{
-              textAlign: "center",
-              py: { xs: 2, sm: 3 },
-              background: card.gradient,
-              border: "1px solid",
-              borderColor: card.borderColor,
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              py: { xs: 2, sm: 2.5 },
+              px: { xs: 2, sm: 2.5 },
+              backgroundColor: "#ffffff",
+              borderRadius: 2,
+              boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+              transition: "box-shadow 0.2s ease",
+              "&:hover": {
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              },
             }}
           >
-            <Typography
+            <Box
               sx={{
-                fontSize: { xs: "1.5rem", sm: "2rem" },
-                fontWeight: 700,
-                color: card.valueColor,
+                width: { xs: 40, sm: 48 },
+                height: { xs: 40, sm: 48 },
+                borderRadius: 2,
+                backgroundColor: card.iconBg,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                flexShrink: 0,
               }}
             >
-              {card.value}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                color: card.labelColor,
-                fontWeight: 500,
-              }}
-            >
-              {card.label}
-            </Typography>
+              {card.icon}
+            </Box>
+            <Box sx={{ minWidth: 0 }}>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1.5rem", sm: "1.75rem" },
+                  fontWeight: 700,
+                  color: "text.primary",
+                  lineHeight: 1.2,
+                }}
+              >
+                {card.value}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: { xs: "0.7rem", sm: "0.8rem" },
+                  color: "text.secondary",
+                  fontWeight: 500,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {card.label}
+              </Typography>
+            </Box>
           </Card>
         </Grid>
       ))}
