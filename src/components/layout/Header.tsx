@@ -19,12 +19,11 @@ export function Header() {
     <AppBar position="sticky" elevation={0}>
       <Toolbar
         sx={{
-          maxWidth: "lg",
           width: "100%",
-          mx: "auto",
-          px: { xs: 1.5, sm: 2 },
-          minHeight: { xs: 52, sm: 56 },
+          px: { xs: 2, sm: 3, md: 4 },
+          minHeight: { xs: 52, sm: 56, md: 70 },
           pt: "env(safe-area-inset-top)",
+          justifyContent: "flex-start",
         }}
       >
         <Link

@@ -24,9 +24,8 @@ export function Card({ children, hover = false, onClick, sx }: CardProps) {
         borderRadius: 3,
         ...(hover && {
           "&:hover": {
-            borderColor: "primary.main",
             transform: "translateY(-2px)",
-            boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.2)",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
           },
         }),
         ...sx,
