@@ -111,7 +111,7 @@ export default function AgentsPage() {
   return (
     <Box
       sx={{
-        maxWidth: "md",
+        maxWidth: { xs: "md", md: "lg" },
         mx: "auto",
         px: { xs: 2, sm: 3 },
         py: { xs: 3, sm: 6 },
