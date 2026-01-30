@@ -6,22 +6,33 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import LinearProgress from "@mui/material/LinearProgress";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import { Button, Card, Badge } from "@/components/ui";
 import { SessionSummary } from "@/components/dashboard/SessionSummary";
-import { getSessions, deleteSession } from "@/lib/storage";
-import type { Session } from "@/types";
+import {
+  getSessions,
+  deleteSession,
+  getAgents,
+  saveSession,
+} from "@/lib/storage";
+import type { Session, Agent } from "@/types";
 import { CircularProgress } from "@mui/material";
 
 export default function DashboardPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchSessions() {
+    async function fetchData() {
       setSessions(getSessions());
+      setAgents(getAgents());
       setIsLoading(false);
     }
-    fetchSessions();
+    fetchData();
   }, []);
 
   if (isLoading) {
@@ -43,6 +54,21 @@ export default function DashboardPage() {
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this session?")) {
       deleteSession(id);
+      setSessions(getSessions());
+    }
+  };
+
+  const handleAgentChange = (
+    sessionId: string,
+    agentId: string | undefined,
+  ) => {
+    const session = sessions.find((s) => s.id === sessionId);
+    if (session && session.status !== "submitted") {
+      const updatedSession: Session = {
+        ...session,
+        agentId: agentId,
+      };
+      saveSession(updatedSession);
       setSessions(getSessions());
     }
   };
@@ -117,7 +143,9 @@ export default function DashboardPage() {
             <SessionCard
               key={session.id}
               session={session}
+              agents={agents}
               onDelete={() => handleDelete(session.id)}
+              onAgentChange={handleAgentChange}
             />
           ))}
         </Stack>
@@ -128,15 +156,27 @@ export default function DashboardPage() {
 
 function SessionCard({
   session,
+  agents,
   onDelete,
+  onAgentChange,
 }: {
   session: Session;
+  agents: Agent[];
   onDelete: () => void;
+  onAgentChange: (sessionId: string, agentId: string | undefined) => void;
 }) {
   const completedDocs = session.submissions.length;
   const totalDocs = session.requiredDocuments.length;
   const completionPercent =
     totalDocs > 0 ? Math.round((completedDocs / totalDocs) * 100) : 0;
+
+  // Check if agent can be reassigned (not submitted)
+  const canReassignAgent = session.status !== "submitted";
+
+  // Find assigned agent
+  const assignedAgent = session.agentId
+    ? agents.find((a) => a.id === session.agentId)
+    : null;
 
   // Determine next action based on status
   const getNextAction = () => {
@@ -236,6 +276,45 @@ function SessionCard({
                 }}
               />
             </Box>
+          )}
+
+          {/* Agent Assignment/Reassignment */}
+          {canReassignAgent && agents.length > 0 && (
+            <Box sx={{ mb: 1.5 }}>
+              <FormControl size="small" sx={{ minWidth: 200 }}>
+                <InputLabel id={`agent-select-${session.id}`}>
+                  Assign Agent
+                </InputLabel>
+                <Select
+                  labelId={`agent-select-${session.id}`}
+                  value={session.agentId || ""}
+                  label="Assign Agent"
+                  onChange={(e) => {
+                    const newAgentId = e.target.value || undefined;
+                    onAgentChange(session.id, newAgentId);
+                  }}
+                  sx={{ fontSize: "0.875rem" }}
+                >
+                  <MenuItem value="">No agent assigned</MenuItem>
+                  {agents
+                    .filter((a) => a.status === "active")
+                    .map((agent) => (
+                      <MenuItem key={agent.id} value={agent.id}>
+                        {agent.name} • {agent.phone}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+            </Box>
+          )}
+
+          {/* Show agent info as text for submitted sessions */}
+          {!canReassignAgent && assignedAgent && (
+            <Typography
+              sx={{ color: "text.secondary", fontSize: "0.875rem", mb: 1.5 }}
+            >
+              👤 Agent: {assignedAgent.name}
+            </Typography>
           )}
 
           <Typography sx={{ fontSize: "0.75rem", color: "text.disabled" }}>

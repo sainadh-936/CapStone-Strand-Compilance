@@ -7,6 +7,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
+const navItems = [
+  { href: "/dashboard", label: "Sessions" },
+  { href: "/agents", label: "Agents" },
+  { href: "/incentives", label: "Incentives" },
+];
+
 export function Header() {
   const pathname = usePathname();
 
@@ -58,11 +64,54 @@ export function Header() {
               color: "common.white",
               fontSize: { xs: "1rem", sm: "1.25rem" },
               letterSpacing: "-0.01em",
+              display: { xs: "none", sm: "block" },
             }}
           >
-            Strand Logistics 2.0
+            Strand Logistics
           </Typography>
         </Link>
+
+        {/* Navigation Links */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: { xs: 1, sm: 2 },
+            ml: "auto",
+          }}
+        >
+          {navItems.map((item) => {
+            const isActive =
+              pathname === item.href || pathname?.startsWith(item.href + "/");
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                style={{ textDecoration: "none" }}
+              >
+                <Typography
+                  sx={{
+                    color: isActive ? "common.white" : "rgba(255,255,255,0.7)",
+                    fontSize: { xs: "0.8125rem", sm: "0.875rem" },
+                    fontWeight: isActive ? 600 : 400,
+                    px: { xs: 1, sm: 1.5 },
+                    py: 0.5,
+                    borderRadius: 1,
+                    bgcolor: isActive
+                      ? "rgba(255,255,255,0.15)"
+                      : "transparent",
+                    transition: "all 0.2s",
+                    "&:hover": {
+                      color: "common.white",
+                      bgcolor: "rgba(255,255,255,0.1)",
+                    },
+                  }}
+                >
+                  {item.label}
+                </Typography>
+              </Link>
+            );
+          })}
+        </Box>
       </Toolbar>
     </AppBar>
   );

@@ -13,7 +13,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Button, Card } from "@/components/ui";
-import { getSession, saveSession } from "@/lib/storage";
+import { getSession, saveSession, saveIncentive } from "@/lib/storage";
+import { createIncentiveForSession } from "@/features/incentives";
 import { getDocumentTypeInfo } from "@/features/documents/documentTypes";
 import type {
   Session,
@@ -203,9 +204,17 @@ export default function PublicSubmissionPage() {
       ...session,
       status: "submitted",
       submissions: allSubmissions,
+      completedAt: new Date().toISOString(),
     };
 
     saveSession(updatedSession);
+
+    // Calculate and save incentive if agent assigned
+    const incentive = createIncentiveForSession(updatedSession);
+    if (incentive) {
+      saveIncentive(incentive);
+    }
+
     setSession(updatedSession);
     setIsComplete(true);
     setIsSubmitting(false);

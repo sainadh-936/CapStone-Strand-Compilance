@@ -6,10 +6,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Button } from "@/components/ui";
-import { getSession, saveSession } from "@/lib/storage";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { Button, Card } from "@/components/ui";
+import { getSession, saveSession, getAgents } from "@/lib/storage";
 import { SessionSummaryCard, ShareLinkCard } from "@/features/review";
-import type { Session } from "@/types";
+import type { Session, Agent } from "@/types";
 
 export default function ReviewPage() {
   const router = useRouter();
@@ -17,6 +21,7 @@ export default function ReviewPage() {
   const sessionId = params.id as string;
 
   const [session, setSession] = useState<Session | null>(null);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -27,6 +32,7 @@ export default function ReviewPage() {
         return;
       }
       setSession(s);
+      setAgents(getAgents());
       setIsLoading(false);
     }
     setReviewPage();
@@ -39,6 +45,17 @@ export default function ReviewPage() {
       ...session,
       status: "link_generated",
       linkGeneratedAt: new Date().toISOString(),
+    };
+    saveSession(updatedSession);
+    setSession(updatedSession);
+  };
+
+  const handleAgentChange = (agentId: string | undefined) => {
+    if (!session || session.status === "submitted") return;
+
+    const updatedSession: Session = {
+      ...session,
+      agentId: agentId,
     };
     saveSession(updatedSession);
     setSession(updatedSession);
@@ -125,6 +142,65 @@ export default function ReviewPage() {
             : "Review the session details and generate a shareable link"}
         </Typography>
       </Box>
+
+      {/* Agent Assignment Section */}
+      {agents.length > 0 && (
+        <Card sx={{ mb: 4 }}>
+          <Typography
+            sx={{
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              color: "text.secondary",
+              mb: 2,
+            }}
+          >
+            Agent Assignment
+          </Typography>
+          {session.status !== "submitted" ? (
+            <FormControl fullWidth size="small">
+              <InputLabel id="agent-select-label">Assign Agent</InputLabel>
+              <Select
+                labelId="agent-select-label"
+                value={session.agentId || ""}
+                label="Assign Agent"
+                onChange={(e) => {
+                  const newAgentId = e.target.value || undefined;
+                  handleAgentChange(newAgentId);
+                }}
+              >
+                <MenuItem value="">No agent assigned</MenuItem>
+                {agents
+                  .filter((a) => a.status === "active")
+                  .map((agent) => (
+                    <MenuItem key={agent.id} value={agent.id}>
+                      {agent.name} • {agent.phone}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                color: "text.primary",
+              }}
+            >
+              <Typography component="span">
+                👤{" "}
+                {agents.find((a) => a.id === session.agentId)?.name ||
+                  "No agent assigned"}
+              </Typography>
+              <Chip
+                label="Locked (Session Submitted)"
+                size="small"
+                sx={{ fontSize: "0.75rem" }}
+              />
+            </Box>
+          )}
+        </Card>
+      )}
 
       <SessionSummaryCard session={session} isLinkGenerated={isLinkGenerated} />
 
